@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CriptoApp.ViewModels"
+             xmlns:cv="clr-namespace:CriptoApp.Convertor;assembly=CriptoApp"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             x:Class="CriptoApp.Views.PortfoyPage"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:PortfoyViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="MenuItem1" Order="Primary" Icon="icon_filter.png" Text="Item 1" Priority="0" />
+        <ToolbarItem Name="MenuItem2" Order="Primary" Icon="icon_sort.png" Text="Item 2" Priority="1" />
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <Grid>
+            <dg:DataGrid x:Name="dgCriptoPortfoy" 
+                         ItemsSource="{Binding ListPortfoy}"  
+                         SelectedItem="{Binding selectedModel}"
+                         SelectionEnabled="True" 
+                         FontSize="15" 
+                         BorderColor="#CCCCCC" 
+                         HeaderTextColor="White" 
+                         HeaderBackground="Black" 
+                         RowHeight="50" 
+                         HeaderHeight="50" 
+                         VerticalOptions="FillAndExpand" 
+                         HorizontalOptions="FillAndExpand">
+                <dg:DataGrid.Columns>
+                    <dg:DataGridColumn Title="İSİM" PropertyName="." Width="1*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding ImageUrl, Mode=OneTime}"   Aspect="AspectFit" HeightRequest="15" WidthRequest="15"/>
+                                        <Label Text="{Binding FullName}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                    </StackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                    <dg:DataGridColumn Title="FİYAT (USD)" PropertyName="." Width="0.95*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"  BackgroundColor="{Binding Renk,Converter={StaticResource StreakToColorConverter}}">
+                                    <Label Text="{Binding Price}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                    <dg:DataGridColumn Title="DEĞİŞİM(24s)(%)" PropertyName="." Width="0.95*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill">
+                                    <Label Text="{Binding Change24}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                </dg:DataGrid.Columns>
+                <dg:DataGrid.RowsBackgroundColorPalette>
+                    <dg:PaletteCollection>
+                        <Color>#454444</Color>
+                        <Color>#454444</Color>
+                    </dg:PaletteCollection>
+                </dg:DataGrid.RowsBackgroundColorPalette>
+                <dg:DataGrid.Resources>
+                    <ResourceDictionary>
+                        <cv:StreakToColorConverter x:Key="StreakToColorConverter"/>
+                    </ResourceDictionary>
+                </dg:DataGrid.Resources>
+            </dg:DataGrid>
+        </Grid>
+        <Grid x:Name="grPopup" IsVisible="{Binding PopupIsVisible}" BackgroundColor="Black" Opacity="0.8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Text="{Binding selectedItem}" TextColor="White" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="1" />
+            <Button Text="Portföyüme Ekle"  HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="2"/>
+            <Button Text="Kapat" Command="{Binding SetVisibleFalseCommand,Mode=TwoWay}" BackgroundColor="Black" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="3"/>
+        </Grid>
+        <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="1">
+                <Label Text="Yükleniyor Lütfen Bekleyin" HorizontalTextAlignment="Center" TextColor="White"/>
+                <ActivityIndicator IsVisible="{Binding IsBusy,Mode=OneWay}" IsRunning="{Binding IsBusy,Mode=OneWay}" HorizontalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+
+    </Grid>
+</ContentPage>

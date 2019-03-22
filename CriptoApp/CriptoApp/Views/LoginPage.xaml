@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CriptoApp.Views.LoginPage"
+             xmlns:vm="clr-namespace:CriptoApp.ViewModels;assembly=CriptoApp"
+             xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
+             BackgroundImage="background.jpg">
+    <ContentPage.Content>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Source="logo_sample.png" Aspect="AspectFit" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <xfx:XfxCardView Padding="10" Margin="20,0,20,0" CornerRadius="20" Elevation="4" Grid.Row="1" Opacity="0.5" BackgroundColor="White">
+                    <StackLayout>
+                        <xfx:XfxEntry Text="{Binding Email}" Placeholder="Email" ErrorDisplay="None" Keyboard="Email"/>
+                        <xfx:XfxEntry Text="{Binding Password}" Placeholder="Şifre" IsPassword="True" ErrorDisplay="None"/>
+                        <Button Text="GİRİŞ" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding LoginCheckCommand}"/>
+                        <Button Text="Kayıt Ol" TextColor="Black" Opacity="0.7" BackgroundColor="White" HorizontalOptions="Center" CornerRadius="20" Command="{Binding GotoRegisterPageCommand}"/>
+                    </StackLayout>
+                </xfx:XfxCardView>
+            </Grid>
+            <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackLayout Grid.Row="1">
+                    <Label Text="Yükleniyor Lütfen Bekleyin" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <ActivityIndicator IsVisible="{Binding IsBusy,Mode=OneWay}" IsRunning="{Binding IsBusy,Mode=OneWay}" HorizontalOptions="Center"/>
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

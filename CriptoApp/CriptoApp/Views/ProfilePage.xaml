@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CriptoApp.ViewModels"
+             xmlns:cv="clr-namespace:CriptoApp.Convertor;assembly=CriptoApp"
+             xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             x:Class="CriptoApp.Views.ProfilePage"
+             BackgroundImage="background.jpg"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="MenuItem1" Order="Primary" Icon="icon_plus.png" Text="Item 1" Command="{Binding OpenMenuItemCommand}" Priority="0" />
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <Grid x:Name="grContent" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackLayout Orientation="Horizontal" Grid.Row="0"  BackgroundColor="Black" Padding="30,10,10,10">
+                <Frame VerticalOptions="Fill"  BackgroundColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" WidthRequest="1" HeightRequest="1" CornerRadius="80">
+                </Frame>
+                <Label Text="{Binding Price}" TextColor="White" FontSize="25" VerticalTextAlignment="Center" Margin="0,0,10,0" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Change24}" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" FontSize="17"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="(%)" FontSize="17" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            <Grid Grid.Row="1" BackgroundColor="#222" Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Son Güncelleme" Grid.Row="0" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
+                <Label Text="{Binding LASTUPDATE}" Grid.Row="0" Grid.Column="1" TextColor="White"/>
+
+                <Label Text="Gün Açılışı" Grid.Row="1" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
+                <Label Text="{Binding OPENDAY}" Grid.Row="1" Grid.Column="1" TextColor="White"/>
+
+                <Label Text="Günün Yükseği" Grid.Row="2" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
+                <Label Text="{Binding HIGHDAY}" Grid.Row="2" Grid.Column="1" TextColor="White"/>
+
+                <Label Text="Günün Düşüğü" Grid.Row="3" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
+                <Label Text="{Binding LOWDAY}" Grid.Row="3" Grid.Column="1" TextColor="White"/>
+            </Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <cv:StreakToColorConverter x:Key="StreakToColorConverter"/>
+                </ResourceDictionary>
+            </Grid.Resources>
+        </Grid>
+        <Grid BackgroundColor="Black" Opacity="0.8" Padding="80" IsVisible="{Binding PopupIsVisible}">
+            <xfx:XfxCardView CornerRadius="20" Padding="10,0,10,0">
+                <StackLayout>
+                    <Label Text="Portföyüme Ekle" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <xfx:XfxEntry Placeholder="Miktar" Text="{Binding userPortfoyModel.Quantity}" ErrorDisplay="None"/>
+                    <xfx:XfxEntry Placeholder="Alış Fiyatınız" Text="{Binding userPortfoyModel.PurchasePrice}" ErrorDisplay="None"/>
+                    <xfx:XfxEntry Placeholder="Stop-Loss" Text="{Binding userPortfoyModel.StopLoss}" ErrorDisplay="None"/>
+                    <Button Text="Kaydet" BackgroundColor="#00001a" TextColor="White" CornerRadius="10" Command="{Binding AddPortfoyCommand}"/>
+                    <Button Text="Kapat" Command="{Binding OpenMenuItemCommand}" TextColor="Black" BackgroundColor="White" Opacity="0.8" CornerRadius="20"/>
+                </StackLayout>
+            </xfx:XfxCardView>
+        </Grid>
+        <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="1">
+                <Label Text="Yükleniyor Lütfen Bekleyin" HorizontalTextAlignment="Center" TextColor="White"/>
+                <ActivityIndicator IsVisible="{Binding IsBusy,Mode=OneWay}" IsRunning="{Binding IsBusy,Mode=OneWay}" HorizontalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

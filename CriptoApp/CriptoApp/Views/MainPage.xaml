@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:views="clr-namespace:CriptoApp.Views"
+            x:Class="CriptoApp.Views.MainPage">
+    <TabbedPage.Children>
+        <NavigationPage Title="Kripto" BackgroundColor="DarkGray" BarTextColor="White" Icon="icon_criptolist.png">
+ 
+            <x:Arguments>
+                <views:CriptoListPage />
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Portföyüm" Icon="icon_portfoy.png">
+            <x:Arguments>
+                <views:PortfoyPage />
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Haberler" Icon="icon_news.png">
+            <x:Arguments>
+                <views:NewsPage />
+            </x:Arguments>
+        </NavigationPage>
+    </TabbedPage.Children>
+</TabbedPage>
