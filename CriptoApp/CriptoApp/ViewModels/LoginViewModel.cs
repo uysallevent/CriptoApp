@@ -2,7 +2,10 @@
 using CriptoApp.Models;
 using CriptoApp.Services;
 using CriptoApp.Views;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -23,8 +26,6 @@ namespace CriptoApp.ViewModels
             this.Navigation = navigation;
             this.GotoMainPageCommand = new Command(async () => await GotoMainPage());
             this.GotoRegisterPageCommand = new Command(async () => await GotoRegisterPage());
-
-
             this.LoginCheckCommand = new Command(async () => await LoginCheck());
 
         }
@@ -32,33 +33,37 @@ namespace CriptoApp.ViewModels
         LoginServiceDataStore loginServiceDataStore = new LoginServiceDataStore();
         private async Task LoginCheck()
         {
-            await GotoMainPage();
-            //if(string.IsNullOrEmpty(Email)||string.IsNullOrEmpty(Password))
-            //{
-            //    Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert("Kullanıcı Adı ve Şifre Bölümlerini Boş Bırakmayın"));
-            //    return;
-            //}
-            //MobileResult mobileResult = new MobileResult();
-            //try
-            //{
-            //    IsBusy = true;
-            //    mobileResult = await loginServiceDataStore.LoginAsync(Email, Password);
-            //}
-            //catch (Exception)
-            //{
+            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+            {
+                Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert("Kullanıcı Adı ve Şifre Bölümlerini Boş Bırakmayın"));
+                return;
+            }
+            MobileResult mobileResult = new MobileResult();
+            try
+            {
+                IsBusy = true;
+                mobileResult = await loginServiceDataStore.LoginAsync(Email, Password);
+            }
+            catch (Exception)
+            {
 
-            //    Device.BeginInvokeOnMainThread(() => AlertHelper.ExceptionAlert());
-            //}
-            //finally
-            //{
-            //    IsBusy = false;
-            //    if (mobileResult != null)
-            //    {
-            //        Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
-            //        if (mobileResult != null && mobileResult.Result)
-            //            await GotoMainPage();
-            //    }
-            //}
+                Device.BeginInvokeOnMainThread(() => AlertHelper.ExceptionAlert());
+            }
+            finally
+            {
+                IsBusy = false;
+                if (mobileResult != null)
+                {
+                    if (mobileResult != null && mobileResult.Result && mobileResult.Content!=null)
+                    {
+                        App.LoginModel = JsonConvert.DeserializeObject<UserModel>(mobileResult.Content.ToString());
+                        var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
+                        App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
+                        Settings.PortfoyList = string.Empty;
+                        await GotoMainPage();
+                    }
+                }
+            }
         }
 
         public async Task GotoMainPage()

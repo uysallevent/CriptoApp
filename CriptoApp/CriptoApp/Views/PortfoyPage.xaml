@@ -5,6 +5,7 @@
              xmlns:cv="clr-namespace:CriptoApp.Convertor;assembly=CriptoApp"
              xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
              x:Class="CriptoApp.Views.PortfoyPage"
+             BackgroundImage="background.jpg"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
         <vm:PortfoyViewModel/>
@@ -27,6 +28,9 @@
                          HeaderHeight="50" 
                          VerticalOptions="FillAndExpand" 
                          HorizontalOptions="FillAndExpand">
+                <x:Arguments>
+                    <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
+                </x:Arguments>
                 <dg:DataGrid.Columns>
                     <dg:DataGridColumn Title="İSİM" PropertyName="." Width="1*">
                         <dg:DataGridColumn.CellTemplate>

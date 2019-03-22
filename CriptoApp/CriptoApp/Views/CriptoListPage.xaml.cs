@@ -14,8 +14,6 @@ namespace CriptoApp.Views
 		{
 			InitializeComponent ();
             BindingContext = viewModel = new CriptoListViewModel(this.Navigation);
-            dgCripto = new Xamarin.Forms.DataGrid.DataGrid(ListViewCachingStrategy.RecycleElementAndDataTemplate);
-
         }
     }
 }

@@ -17,7 +17,7 @@ namespace CriptoApp.Services
             try
             {
                 var Client = await GetClient();
-                var response = await Client.PostAsync(APIUrl + "UserPortFoy/Add", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
+                var response = await Client.PostAsync(APIUrl + "UserPortfoy/Add", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
                 var ResponseContent = await response.Content.ReadAsStringAsync();
                 mobileResult = JsonConvert.DeserializeObject<MobileResult>(ResponseContent);
                 return mobileResult;
@@ -65,13 +65,13 @@ namespace CriptoApp.Services
             }
         }
 
-        public async Task<MobileResult>GetListAsync(UserPortfoyModel item)
+        public async Task<MobileResult> GetListAsync(int Id)
         {
             MobileResult mobileResult = new MobileResult();
             try
             {
                 var Client = await GetClient();
-                var response = await Client.GetStringAsync(APIUrl + "api/Portfoy/ListPortfoy" + new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
+                var response = await Client.GetStringAsync(APIUrl + "UserPortfoy/List?UserId=" + Id);
                 mobileResult = JsonConvert.DeserializeObject<MobileResult>(response);
                 return mobileResult;
             }
@@ -99,6 +99,7 @@ namespace CriptoApp.Services
         {
             throw new NotImplementedException();
         }
+
 
     }
 }

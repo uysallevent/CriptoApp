@@ -30,8 +30,7 @@ namespace CriptoApp.ViewModels
                 if (value.CurrencyShortening != null)
                 {
                     _currencyModel = value;
-
-                    client.SendMessage("android", _currencyModel.CurrencyShortening);
+                    //client.SendMessage("android", _currencyModel.CurrencyShortening);
                 }
             }
         }
@@ -63,7 +62,6 @@ namespace CriptoApp.ViewModels
         {
             Title = "Kripto Paralar";
             Navigation = navigation;
-            ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
             ListCurrency = new ObservableCollection<CurrencyModel> {
                 new CurrencyModel(){Id=1,CurrencyName="LİRA",CurrencyShortening="CurrencyTRY" },
                 new CurrencyModel(){Id=2,CurrencyName="DOLAR",CurrencyShortening="CurrencyUSD" },
@@ -71,11 +69,13 @@ namespace CriptoApp.ViewModels
             };
             currencyModel = new CurrencyModel();
             SetVisibleCommand = new Command(SetVisible);
+            ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
             if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
                 IsBusy = true;
-            client.Connect("android");
-            client.ConnectionError += Client_ConnectionError;
-            client.OnMessageReceived += Client_OnMessageReceived;
+            App.client = new SignalRClient();
+            App.client.Connect("android");
+            App.client.ConnectionError += Client_ConnectionError;
+            App.client.OnMessageReceived += Client_OnMessageReceived;
         }
 
         private void SetVisible(object obj)

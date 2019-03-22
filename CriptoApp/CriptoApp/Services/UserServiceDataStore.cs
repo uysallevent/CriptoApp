@@ -50,6 +50,11 @@ namespace CriptoApp.Services
             throw new NotImplementedException();
         }
 
+        public Task<MobileResult> GetListAsync(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<MobileResult> UpdateItemAsync(UserModel item)
         {
             throw new NotImplementedException();

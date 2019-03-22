@@ -10,8 +10,22 @@ namespace CriptoApp.Views
     {
         public MainPage()
         {
-            InitializeComponent();
-            On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+            IsBusy = true;
+            try
+            {
+                InitializeComponent();
+                On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
         }
     }
 }

@@ -13,7 +13,6 @@ namespace CriptoApp.Services
         Task<MobileResult> GetItemAsync(string id);
         Task<MobileResult> GetItemNoParamAsync(bool forceRefresh = false);
         Task<MobileResult> GetItemsAsync(bool forceRefresh = false);
-
-        
+        Task<MobileResult> GetListAsync(int Id);
     }
 }

@@ -51,5 +51,10 @@ namespace CriptoApp.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<MobileResult> GetListAsync(int Id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

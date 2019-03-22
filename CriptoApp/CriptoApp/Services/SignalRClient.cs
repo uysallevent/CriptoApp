@@ -20,7 +20,6 @@ namespace CriptoApp.Services
         public event Error ConnectionError;
         public event MessageReceived OnMessageReceived;
 
-
         public void Connect(string _username)
         {
             Connection = new HubConnection(url, new Dictionary
@@ -43,6 +42,19 @@ namespace CriptoApp.Services
                 if (task.IsFaulted)
                     ConnectionError?.Invoke();
             });
+        }
+
+        public void Stop()
+        {
+            try
+            {
+                if (Connection != null)
+                    Connection.Stop();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public void SendMessage(string sender, string message)

@@ -28,6 +28,9 @@
                          HeaderHeight="50" 
                          VerticalOptions="FillAndExpand" 
                          HorizontalOptions="FillAndExpand">
+                <x:Arguments>
+                    <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
+                </x:Arguments>
                 <dg:DataGrid.Columns>
                     <dg:DataGridColumn Title="İSİM" PropertyName="." Width="1*">
                         <dg:DataGridColumn.CellTemplate>

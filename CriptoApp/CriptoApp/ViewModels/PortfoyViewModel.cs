@@ -44,39 +44,37 @@ namespace CriptoApp.ViewModels
             if (!ListCripto.Contains("Connected") && !ListCripto.Contains("Disconnected") && !ListCripto.Contains("Reconnected"))
             {
                 Device.BeginInvokeOnMainThread(() =>
-                {
-                    try
-                    {
-                        if (IsBusy)
-                            return;
-                        IsBusy = true;
-                        ListPortfoy.Clear();
-                        string[] PortfoyArray = Settings.PortfoyList.Split('-');
-                        var JsonListe = JsonConvert.DeserializeObject<ObservableCollection<CurrencyServiceModel>>(ListCripto);
+               {
+                   try
+                   {
+                       if (IsBusy)
+                           return;
+                       IsBusy = true;
+                       ListPortfoy.Clear();
+                       var JsonListe = JsonConvert.DeserializeObject<ObservableCollection<CurrencyServiceModel>>(ListCripto);
+                       foreach (var item in App.ListUserPortfoy)
+                       {
+                           var Bulunan = JsonListe.FirstOrDefault(x => x.FullName == item.CriptoName);
+                           if (Bulunan != null)
+                               ListPortfoy.Add(Bulunan);
+                       }
+                   }
+                   catch (Exception ex)
+                   {
 
-                        foreach (var item in PortfoyArray)
-                        {
-                            var Bulunan = JsonListe.FirstOrDefault(x=>x.FullName==item);
-                            if (Bulunan != null)
-                                ListPortfoy.Add(Bulunan);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
+                   }
+                   finally
+                   {
+                       IsBusy = false;
+                   }
 
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                    }
-
-                });
+               });
             }
         }
 
         private void Client_ConnectionError()
         {
-            
+
 
         }
 

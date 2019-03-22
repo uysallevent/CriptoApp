@@ -2,6 +2,10 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using CriptoApp.Views;
+using CriptoApp.Models;
+using System.Collections;
+using System.Collections.ObjectModel;
+using CriptoApp.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace CriptoApp
@@ -12,10 +16,15 @@ namespace CriptoApp
         public App()
         {
             InitializeComponent();
-
-
             MainPage = new LoginPage();
         }
+
+        public static UserModel LoginModel { get; set; }
+
+        public static SignalRClient client { get; set; }
+
+
+        public static ObservableCollection<UserPortfoyModel> ListUserPortfoy { get; set; }
 
         protected override void OnStart()
         {
