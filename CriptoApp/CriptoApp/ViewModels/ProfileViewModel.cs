@@ -54,21 +54,12 @@ namespace CriptoApp.ViewModels
                 userPortfoyModel.CriptoSymbol = _model.FromSymbol;
                 userPortfoyModel.UserId = App.LoginModel.Id;
                 userPortfoyModel.IsDeleted = 0;
-
                 mobileResult = await PortfoyServiceDataStore.AddItemAsync(userPortfoyModel);
                 if(mobileResult.Result)
                 {
                     var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
                     App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
-                    if (Settings.PortfoyList.Contains(_model.FullName+"-"+_model.FromSymbol))
-                        return;
-                    if (string.IsNullOrEmpty(Settings.PortfoyList))
-                        Settings.PortfoyList = _model.FullName + "-" + _model.FromSymbol;
-                    else
-                        Settings.PortfoyList = Settings.PortfoyList + "," + _model.FullName + "-" + _model.FromSymbol;
-
                 }
-                Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
             }
             catch (Exception)
             {
@@ -76,6 +67,9 @@ namespace CriptoApp.ViewModels
             }
             finally
             {
+                Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
+                userPortfoyModel = new UserPortfoyModel();
+                PopupIsVisible = false;
                 IsBusy = false;
             }
 

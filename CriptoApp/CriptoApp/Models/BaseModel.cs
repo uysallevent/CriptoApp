@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace CriptoApp.Models
 {
-   public class BaseModel
+   public class BaseModel:INotifyPropertyChanged
     {
         public BaseModel()
         {
@@ -19,5 +21,12 @@ namespace CriptoApp.Models
         public DateTime? Update { get; set; }
 
         public DateTime? Delete { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChange([CallerMemberName]string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

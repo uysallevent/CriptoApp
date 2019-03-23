@@ -18,6 +18,7 @@ namespace CriptoApp.ViewModels
     {
         SignalRClient client = new SignalRClient();
         IList<CurrencyServiceModel> model = new ObservableCollection<CurrencyServiceModel>();
+
         public ObservableCollection<CurrencyServiceModel> ListCriptoMoney { get; set; }
         public ObservableCollection<CurrencyModel> ListCurrency { get; set; }
         private CurrencyModel _currencyModel;
@@ -114,17 +115,19 @@ namespace CriptoApp.ViewModels
 
         private void Client_OnMessageReceived(string ListCripto)
         {
-            if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
-                IsBusy = true;
-            else
-                IsBusy = false;
-            if (!ListCripto.Contains("Connected") && !ListCripto.Contains("Disconnected") && !ListCripto.Contains("Reconnected"))
+            try
             {
-                try
+                if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
+                    IsBusy = true;
+                else
+                    IsBusy = false;
+                if (!ListCripto.Contains("Connected") && !ListCripto.Contains("Disconnected") && !ListCripto.Contains("Reconnected"))
                 {
+
                     var JsonListe = JsonConvert.DeserializeObject<ObservableCollection<CurrencyServiceModel>>(ListCripto);
                     if (ListCriptoMoney.Count == 0)
                     {
+                        ListCriptoMoney.Clear();
                         foreach (var item in JsonListe)
                         {
                             ListCriptoMoney.Add(item);
@@ -147,11 +150,14 @@ namespace CriptoApp.ViewModels
 
                         }
                     }
-                }
-                catch (Exception ex)
-                {
 
                 }
+                else
+                    DependencyService.Get<IToastHelper>().ToastMessage(ListCripto);
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 

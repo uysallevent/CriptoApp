@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:CriptoApp.ViewModels"
+             xmlns:behavior="clr-namespace:CriptoApp.Helper"
              xmlns:cv="clr-namespace:CriptoApp.Convertor;assembly=CriptoApp"
              xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
              xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
@@ -20,9 +21,10 @@
             <StackLayout Orientation="Horizontal" Grid.Row="0"  BackgroundColor="Black" Padding="30,10,10,10">
                 <Frame VerticalOptions="Fill"  BackgroundColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" WidthRequest="1" HeightRequest="1" CornerRadius="80">
                 </Frame>
-                <Label Text="{Binding Price}" TextColor="White" FontSize="25" VerticalTextAlignment="Center" Margin="0,0,10,0" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Change24}" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" FontSize="17"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding PriceToSymbol}" TextColor="White" FontSize="25" VerticalTextAlignment="Center" Margin="0,0,10,0" HorizontalTextAlignment="Center"/>
                 <Label Text="(%)" FontSize="17" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Change24}" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" FontSize="17"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+
             </StackLayout>
             <Grid Grid.Row="1" BackgroundColor="#222" Padding="10">
                 <Grid.RowDefinitions>
@@ -38,13 +40,13 @@
                 <Label Text="{Binding LASTUPDATE}" Grid.Row="0" Grid.Column="1" TextColor="White"/>
 
                 <Label Text="Gün Açılışı" Grid.Row="1" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
-                <Label Text="{Binding OPENDAY}" Grid.Row="1" Grid.Column="1" TextColor="White"/>
+                <Label Text="{Binding CustomOPENDAY}" Grid.Row="1" Grid.Column="1" TextColor="White"/>
 
                 <Label Text="Günün Yükseği" Grid.Row="2" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
-                <Label Text="{Binding HIGHDAY}" Grid.Row="2" Grid.Column="1" TextColor="White"/>
+                <Label Text="{Binding CustomHIGHDAY}" Grid.Row="2" Grid.Column="1" TextColor="White"/>
 
                 <Label Text="Günün Düşüğü" Grid.Row="3" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
-                <Label Text="{Binding LOWDAY}" Grid.Row="3" Grid.Column="1" TextColor="White"/>
+                <Label Text="{Binding CustomLOWDAY}" Grid.Row="3" Grid.Column="1" TextColor="White"/>
             </Grid>
             <Grid.Resources>
                 <ResourceDictionary>
@@ -56,10 +58,18 @@
             <xfx:XfxCardView CornerRadius="20" Padding="10,0,10,0">
                 <StackLayout>
                     <Label Text="Portföyüme Ekle" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                    <xfx:XfxEntry Placeholder="Miktar" Text="{Binding userPortfoyModel.Quantity}" ErrorDisplay="None"/>
-                    <xfx:XfxEntry Placeholder="Alış Fiyatınız" Text="{Binding userPortfoyModel.PurchasePrice}" ErrorDisplay="None"/>
-                    <xfx:XfxEntry Placeholder="Stop-Loss" Text="{Binding userPortfoyModel.StopLoss}" ErrorDisplay="None"/>
-                    <Button Text="Kaydet" BackgroundColor="#00001a" TextColor="White" CornerRadius="10" Command="{Binding AddPortfoyCommand}"/>
+                    <xfx:XfxEntry Placeholder="Miktar" Text="{Binding userPortfoyModel.Quantity}" ErrorDisplay="None" Keyboard="Numeric"/>
+                    <xfx:XfxEntry Placeholder="Alış Fiyatınız" Text="{Binding userPortfoyModel.PurchasePrice}" ErrorDisplay="None" Keyboard="Numeric">
+                        <xfx:XfxEntry.Behaviors>
+                            <behavior:EntryDecimalCheckBehavior/>
+                        </xfx:XfxEntry.Behaviors>
+                    </xfx:XfxEntry>
+                    <xfx:XfxEntry Placeholder="Stop-Loss" Text="{Binding userPortfoyModel.StopLoss}" ErrorDisplay="None" Keyboard="Numeric">
+                        <xfx:XfxEntry.Behaviors>
+                            <behavior:EntryDecimalCheckBehavior/>
+                        </xfx:XfxEntry.Behaviors>
+                    </xfx:XfxEntry>
+                    <Button Text="Kaydet" BackgroundColor="#00001a" TextColor="White" CornerRadius="10" Command="{Binding AddPortfoyCommand}"></Button>
                     <Button Text="Kapat" Command="{Binding OpenMenuItemCommand}" TextColor="Black" BackgroundColor="White" Opacity="0.8" CornerRadius="20"/>
                 </StackLayout>
             </xfx:XfxCardView>

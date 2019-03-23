@@ -13,7 +13,14 @@ namespace CriptoApp.Views
 		public CriptoListPage ()
 		{
 			InitializeComponent ();
-            BindingContext = viewModel = new CriptoListViewModel(this.Navigation);
+            dgCripto = new Xamarin.Forms.DataGrid.DataGrid();
+            BindingContext = new CriptoListViewModel(this.Navigation);
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            //viewModel.ConnectSignalR();
         }
     }
 }

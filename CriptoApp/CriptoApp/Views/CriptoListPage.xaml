@@ -29,31 +29,31 @@
                          VerticalOptions="FillAndExpand" 
                          HorizontalOptions="FillAndExpand">
                 <x:Arguments>
-                    <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
+                    <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
                 </x:Arguments>
                 <dg:DataGrid.Columns>
-                    <dg:DataGridColumn Title="İSİM" PropertyName="." Width="1*">
+                    <dg:DataGridColumn Title="İSİM" PropertyName="{Binding .}" Width="1*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">
                                     <StackLayout Orientation="Horizontal">
-                                        <Image Source="{Binding ImageUrl, Mode=OneTime}"  Aspect="AspectFit" HeightRequest="15" WidthRequest="15"/>
+                                        <Image Source="{Binding ImageUrl, Mode=OneWay}"  Aspect="AspectFit" HeightRequest="15" WidthRequest="15"/>
                                         <Label Text="{Binding FullName}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
                                     </StackLayout>
                                 </ContentView>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
-                    <dg:DataGridColumn Title="FİYAT (USD)" PropertyName="." Width="0.95*">
+                    <dg:DataGridColumn Title="FİYAT (USD)" PropertyName="{Binding .}" Width="0.95*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"  BackgroundColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}">
-                                    <Label Text="{Binding Price}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
+                                    <Label Text="{Binding PriceToSymbol}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
                                 </ContentView>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
-                    <dg:DataGridColumn Title="DEĞİŞİM(24s)(%)" PropertyName="." Width="0.95*">
+                    <dg:DataGridColumn Title="DEĞİŞİM(24s)(%)" PropertyName="{Binding .}" Width="0.95*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentView HorizontalOptions="Fill" VerticalOptions="Fill">

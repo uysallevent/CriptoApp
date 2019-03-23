@@ -4,21 +4,73 @@ using System.Text;
 
 namespace CriptoApp.Models
 {
-    public class UserPortfoyModel: BaseModel
+    public class UserPortfoyModel : BaseModel
     {
         public int UserId { get; set; }
 
-        public string CriptoName { get; set; }
+        private string _CriptoName;
+        public string CriptoName
+        {
+            get { return _CriptoName; }
+            set
+            {
+                _CriptoName = value;
+                OnPropertyChange("CriptoName");
+            }
+        }
 
-        public string CriptoSymbol { get; set; }
+        private string _CriptoSymbol;
+        public string CriptoSymbol
+        {
+            get { return _CriptoSymbol; }
+            set
+            {
+                _CriptoSymbol = value;
+                OnPropertyChange("CriptoSymbol");
+            }
+        }
 
-        public decimal Price { get; set; }
+        private decimal _Price;
+        public decimal Price
+        {
+            get { return _Price; }
+            set { _Price = value;
+                OnPropertyChange("Price");
+            }
+        }
 
-        public decimal PurchasePrice { get; set; }
+        private decimal _PurchasePrice;
+        public decimal PurchasePrice
+        {
+            get { return _PurchasePrice; }
+            set
+            {
+                _PurchasePrice = value;
+                OnPropertyChange("PurchasePrice");
+            }
+        }
 
-        public decimal StopLoss { get; set; }
+        private decimal _StopLoss;
+        public decimal StopLoss
+        {
+            get { return _StopLoss; }
+            set
+            {
+                _StopLoss = value;
+                OnPropertyChange("StopLoss");
+            }
+        }
 
-        public decimal Quantity { get; set; }
+        private decimal _Quantity;
+        public decimal Quantity
+        {
+            get { return _Quantity; }
+            set
+            {
+                _Quantity = value;
+                OnPropertyChange("Quantity");
+            }
+        }
 
     }
 }

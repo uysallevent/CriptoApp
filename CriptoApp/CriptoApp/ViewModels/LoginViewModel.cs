@@ -51,18 +51,18 @@ namespace CriptoApp.ViewModels
             }
             finally
             {
-                IsBusy = false;
-                if (mobileResult != null)
+                if (mobileResult != null && mobileResult.Result && mobileResult.Content != null)
                 {
-                    if (mobileResult != null && mobileResult.Result && mobileResult.Content!=null)
-                    {
-                        App.LoginModel = JsonConvert.DeserializeObject<UserModel>(mobileResult.Content.ToString());
-                        var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
-                        App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
-                        Settings.PortfoyList = string.Empty;
-                        await GotoMainPage();
-                    }
+                    App.LoginModel = JsonConvert.DeserializeObject<UserModel>(mobileResult.Content.ToString());
+                    var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
+                    App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
+                    Settings.PortfoyList = string.Empty;
+                    await GotoMainPage();
                 }
+                else
+                    Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
+                IsBusy = false;
+
             }
         }
 
@@ -70,8 +70,6 @@ namespace CriptoApp.ViewModels
         {
             try
             {
-                if (IsBusy)
-                    return;
                 IsBusy = true;
                 await Navigation.PushModalAsync(new MainPage());
             }

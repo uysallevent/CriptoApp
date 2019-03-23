@@ -9,6 +9,15 @@ namespace CriptoApp.Models
 {
     public class CurrencyServiceModel : INotifyPropertyChanged
     {
+        public string PriceToSymbol { get { return ToSymbol + Price.ToString(); } }
+
+        public string CustomOPENDAY { get { return ToSymbol + OPENDAY.ToString(); } }
+
+        public string CustomLOWDAY { get { return ToSymbol + LOWDAY.ToString(); } }
+
+        public string CustomHIGHDAY { get { return ToSymbol + HIGHDAY.ToString(); } }
+
+
 
         public string FromSymbol { get; set; }
 
