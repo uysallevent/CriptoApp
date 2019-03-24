@@ -56,7 +56,6 @@ namespace CriptoApp.ViewModels
                     App.LoginModel = JsonConvert.DeserializeObject<UserModel>(mobileResult.Content.ToString());
                     var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
                     App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
-                    Settings.PortfoyList = string.Empty;
                     await GotoMainPage();
                 }
                 else

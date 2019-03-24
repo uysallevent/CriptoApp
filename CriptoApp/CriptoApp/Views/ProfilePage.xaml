@@ -21,10 +21,10 @@
             <StackLayout Orientation="Horizontal" Grid.Row="0"  BackgroundColor="Black" Padding="30,10,10,10">
                 <Frame VerticalOptions="Fill"  BackgroundColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" WidthRequest="1" HeightRequest="1" CornerRadius="80">
                 </Frame>
-                <Label Text="{Binding PriceToSymbol}" TextColor="White" FontSize="25" VerticalTextAlignment="Center" Margin="0,0,10,0" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding ToSymbol}" FontSize="17" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Price}" TextColor="White" FontSize="25" VerticalTextAlignment="Center" Margin="0,0,10,0" HorizontalTextAlignment="Center"/>
                 <Label Text="(%)" FontSize="17" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
                 <Label Text="{Binding Change24}" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" FontSize="17"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
-
             </StackLayout>
             <Grid Grid.Row="1" BackgroundColor="#222" Padding="10">
                 <Grid.RowDefinitions>
@@ -48,12 +48,93 @@
                 <Label Text="Günün Düşüğü" Grid.Row="3" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
                 <Label Text="{Binding CustomLOWDAY}" Grid.Row="3" Grid.Column="1" TextColor="White"/>
             </Grid>
+            <dg:DataGrid x:Name="dgCripto" 
+                         ItemsSource="{Binding ListUserPortfoy}"  
+                         SelectedItem="{Binding selectedModel}"
+                         SelectionEnabled="True" 
+                         FontSize="15" 
+                         BorderColor="#CCCCCC" 
+                         HeaderTextColor="White" 
+                         HeaderBackground="Black" 
+                         RowHeight="50" 
+                         HeaderHeight="50" 
+                         VerticalOptions="FillAndExpand" 
+                         HorizontalOptions="FillAndExpand"
+                         Grid.Row="2">
+                <x:Arguments>
+                    <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                </x:Arguments>
+                <dg:DataGrid.Columns>
+                    <dg:DataGridColumn Title="İSİM" PropertyName="{Binding .}" Width="1*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding CriptoName}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                    </StackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                    <dg:DataGridColumn Title="FİYAT" PropertyName="{Binding .}" Width="1*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding PurchasePrice}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                    </StackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                    <dg:DataGridColumn Title="ADET" PropertyName="{Binding .}" Width="1*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Quantity}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                    </StackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                    <dg:DataGridColumn Title="DUEUM" PropertyName="{Binding .}" Width="1*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding IsDeleted}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                    </StackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                    <dg:DataGridColumn Title="TARİH" PropertyName="{Binding .}" Width="1*">
+                        <dg:DataGridColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Crated}" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                    </StackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                </dg:DataGrid.Columns>
+                <dg:DataGrid.RowsBackgroundColorPalette>
+                    <dg:PaletteCollection>
+                        <Color>#454444</Color>
+                        <Color>#454444</Color>
+                    </dg:PaletteCollection>
+                </dg:DataGrid.RowsBackgroundColorPalette>
+            </dg:DataGrid>
             <Grid.Resources>
                 <ResourceDictionary>
                     <cv:StreakToColorConverter x:Key="StreakToColorConverter"/>
                 </ResourceDictionary>
             </Grid.Resources>
         </Grid>
+
         <Grid BackgroundColor="Black" Opacity="0.8" Padding="80" IsVisible="{Binding PopupIsVisible}">
             <xfx:XfxCardView CornerRadius="20" Padding="10,0,10,0">
                 <StackLayout>

@@ -49,7 +49,7 @@ namespace CriptoApp.Services
             try
             {
                 if (Connection != null)
-                    Connection.Stop();
+                    Connection.Stop(); 
             }
             catch (Exception)
             {

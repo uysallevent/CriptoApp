@@ -2,10 +2,10 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:views="clr-namespace:CriptoApp.Views"
+            xmlns:vm="clr-namespace:CriptoApp.ViewModels"
             x:Class="CriptoApp.Views.MainPage">
     <TabbedPage.Children>
         <NavigationPage Title="Kripto" BackgroundColor="DarkGray" BarTextColor="White" Icon="icon_criptolist.png">
- 
             <x:Arguments>
                 <views:CriptoListPage />
             </x:Arguments>

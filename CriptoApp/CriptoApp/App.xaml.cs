@@ -21,10 +21,11 @@ namespace CriptoApp
 
         public static UserModel LoginModel { get; set; }
 
-        public static SignalRClient client { get; set; }
-
+        public static ObservableCollection<CurrencyServiceModel> ListCriptoMoney { get; set; }
 
         public static ObservableCollection<UserPortfoyModel> ListUserPortfoy { get; set; }
+
+        public static SignalRClient client;
 
         protected override void OnStart()
         {

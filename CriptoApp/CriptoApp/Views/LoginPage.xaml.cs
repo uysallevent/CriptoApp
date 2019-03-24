@@ -20,11 +20,5 @@ namespace CriptoApp.Views
             BindingContext = viewModel = new LoginViewModel(this.Navigation);
         }
 
-        protected override void OnAppearing()
-        {
-            if (App.client != null)
-                App.client.Stop();
-            base.OnAppearing();
-        }
     }
 }

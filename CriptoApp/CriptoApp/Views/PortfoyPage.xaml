@@ -47,7 +47,7 @@
                     <dg:DataGridColumn Title="FİYAT (USD)" PropertyName="." Width="0.95*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"  BackgroundColor="{Binding Renk,Converter={StaticResource StreakToColorConverter}}">
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"  BackgroundColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}">
                                     <Label Text="{Binding Price}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
                                 </ContentView>
                             </DataTemplate>

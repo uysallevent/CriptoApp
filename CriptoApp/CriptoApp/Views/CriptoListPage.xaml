@@ -48,7 +48,7 @@
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"  BackgroundColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}">
-                                    <Label Text="{Binding PriceToSymbol}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
+                                    <Label Text="{Binding Price}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
                                 </ContentView>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>

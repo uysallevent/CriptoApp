@@ -16,13 +16,11 @@ namespace CriptoApp.ViewModels
 {
     public class CriptoListViewModel : BaseViewModel
     {
-        SignalRClient client = new SignalRClient();
+        public SignalRClient client;
         IList<CurrencyServiceModel> model = new ObservableCollection<CurrencyServiceModel>();
-
         public ObservableCollection<CurrencyServiceModel> ListCriptoMoney { get; set; }
         public ObservableCollection<CurrencyModel> ListCurrency { get; set; }
         private CurrencyModel _currencyModel;
-
         public CurrencyModel currencyModel
         {
             get { return _currencyModel; }
@@ -35,7 +33,6 @@ namespace CriptoApp.ViewModels
                 }
             }
         }
-
         CurrencyServiceModel _selectedModel;
         public CurrencyServiceModel selectedModel
         {
@@ -73,10 +70,11 @@ namespace CriptoApp.ViewModels
             ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
             if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
                 IsBusy = true;
-            App.client = new SignalRClient();
-            App.client.Connect("android");
-            App.client.ConnectionError += Client_ConnectionError;
-            App.client.OnMessageReceived += Client_OnMessageReceived;
+            if (client == null)
+                client = new SignalRClient();
+            client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
+            client.ConnectionError += Client_ConnectionError;
+            client.OnMessageReceived += Client_OnMessageReceived;
         }
 
         private void SetVisible(object obj)
@@ -115,50 +113,52 @@ namespace CriptoApp.ViewModels
 
         private void Client_OnMessageReceived(string ListCripto)
         {
-            try
+            Device.BeginInvokeOnMainThread(() =>
             {
-                if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
-                    IsBusy = true;
-                else
-                    IsBusy = false;
-                if (!ListCripto.Contains("Connected") && !ListCripto.Contains("Disconnected") && !ListCripto.Contains("Reconnected"))
+                try
                 {
-
-                    var JsonListe = JsonConvert.DeserializeObject<ObservableCollection<CurrencyServiceModel>>(ListCripto);
-                    if (ListCriptoMoney.Count == 0)
-                    {
-                        ListCriptoMoney.Clear();
-                        foreach (var item in JsonListe)
-                        {
-                            ListCriptoMoney.Add(item);
-                        }
-                    }
+                    if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
+                        IsBusy = true;
                     else
+                        IsBusy = false;
+                    if (!ListCripto.Contains("Connected") && !ListCripto.Contains("Disconnected") && !ListCripto.Contains("Reconnected"))
                     {
-                        foreach (var item in JsonListe)
+
+                        var JsonListe = JsonConvert.DeserializeObject<ObservableCollection<CurrencyServiceModel>>(ListCripto);
+                        if (ListCriptoMoney.Count == 0)
                         {
-                            var model = ListCriptoMoney.FirstOrDefault(x => x.FromSymbol == item.FromSymbol);
-                            if (model.Price > item.Price)
-                                model.Change = 0;
-                            else if (model.Price < item.Price)
-                                model.Change = 1;
-                            else
-                                model.Change = 2;
-
-                            model.Price = item.Price;
-                            model.Change24 = item.Change24;
-
+                            ListCriptoMoney.Clear();
+                            foreach (var item in JsonListe)
+                            {
+                                ListCriptoMoney.Add(item);
+                            }
                         }
+                        else
+                        {
+                            foreach (var item in JsonListe)
+                            {
+                                var model = ListCriptoMoney.FirstOrDefault(x => x.FromSymbol == item.FromSymbol);
+                                if (model == null)
+                                    continue;
+                                if (model.Price > item.Price)
+                                    model.Change = 0;
+                                else if (model.Price < item.Price)
+                                    model.Change = 1;
+                                else
+                                    model.Change = 2;
+                                model.Price = item.Price;
+                                model.Change24 = item.Change24;
+
+                            }
+                        }
+
                     }
-
                 }
-                else
-                    DependencyService.Get<IToastHelper>().ToastMessage(ListCripto);
-            }
-            catch (Exception ex)
-            {
-
-            }
+                catch (Exception ex)
+                {
+                    AlertHelper.MessageAlert(ex.Message);
+                }
+            });
         }
 
         private void Client_ConnectionError()

@@ -22,14 +22,16 @@ namespace CriptoApp.ViewModels
         public bool IsBusy
         {
             get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            //set { SetProperty(ref isBusy, value); }
+            set { isBusy = value;OnPropertyChanged("IsBusy"); }
         }
 
         bool popupIsVisible = false;
         public bool PopupIsVisible
         {
             get { return popupIsVisible; }
-            set { SetProperty(ref popupIsVisible, value); }
+            //set { SetProperty(ref popupIsVisible, value); }
+            set { popupIsVisible = value;OnPropertyChanged("PopupIsVisible"); }
         }
 
         string _selectedItem;
@@ -47,21 +49,22 @@ namespace CriptoApp.ViewModels
         public string Title
         {
             get { return title; }
-            set { SetProperty(ref title, value); }
+            //set { SetProperty(ref title, value); }
+            set { title = value;OnPropertyChanged("Title"); }
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
+        //protected bool SetProperty<T>(ref T backingStore, T value,
+        //    [CallerMemberName]string propertyName = "",
+        //    Action onChanged = null)
+        //{
+        //    if (EqualityComparer<T>.Default.Equals(backingStore, value))
+        //        return false;
 
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
+        //    backingStore = value;
+        //    onChanged?.Invoke();
+        //    OnPropertyChanged(propertyName);
+        //    return true;
+        //}
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

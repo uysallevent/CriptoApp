@@ -2,6 +2,7 @@
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using CriptoApp.Helper;
 
 namespace CriptoApp.Views
 {
@@ -16,10 +17,9 @@ namespace CriptoApp.Views
                 InitializeComponent();
                 On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(ex.Message));
             }
             finally
             {

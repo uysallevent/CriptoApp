@@ -14,8 +14,8 @@ namespace CriptoApp.ViewModels
 {
     public class PortfoyViewModel : BaseViewModel
     {
+        public SignalRClient client;
         public ObservableCollection<CurrencyServiceModel> ListPortfoy { get; set; }
-        SignalRClient client = new SignalRClient();
         CurrencyServiceModel _selectedModel;
         public CurrencyServiceModel selectedModel
         {
@@ -34,7 +34,9 @@ namespace CriptoApp.ViewModels
         {
             Title = "Portföyüm";
             ListPortfoy = new ObservableCollection<CurrencyServiceModel>();
-            client.Connect("android");
+            if (client == null)
+                client = new SignalRClient();
+            client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
             client.ConnectionError += Client_ConnectionError;
             client.OnMessageReceived += Client_OnMessageReceived;
         }
@@ -50,14 +52,36 @@ namespace CriptoApp.ViewModels
                        if (IsBusy)
                            return;
                        IsBusy = true;
-                       ListPortfoy.Clear();
                        var JsonListe = JsonConvert.DeserializeObject<ObservableCollection<CurrencyServiceModel>>(ListCripto);
-                       foreach (var item in App.ListUserPortfoy)
+                       if (ListPortfoy.Count == 0)
                        {
-                           var Bulunan = JsonListe.FirstOrDefault(x => x.FullName == item.CriptoName);
-                           if (Bulunan != null)
-                               ListPortfoy.Add(Bulunan);
+                           ListPortfoy.Clear();
+                           foreach (var item in App.ListUserPortfoy)
+                           {
+                               var Eklenecek = JsonListe.FirstOrDefault(x => x.FullName == item.CriptoName);
+                               if (Eklenecek == null)
+                                   continue;
+                               ListPortfoy.Add(Eklenecek);
+                           }
                        }
+                       else
+                       {
+                           foreach (var item in JsonListe)
+                           {
+                               var Guncellenecek = ListPortfoy.FirstOrDefault(x => x.FullName == item.FullName);
+                               if (Guncellenecek == null)
+                                   continue;
+                               if (Guncellenecek.Price > item.Price)
+                                   Guncellenecek.Change = 0;
+                               else if (Guncellenecek.Price < item.Price)
+                                   Guncellenecek.Change = 1;
+                               else
+                                   Guncellenecek.Change = 2;
+                               Guncellenecek.Price = item.Price;
+                               Guncellenecek.Change24 = item.Change24;
+                           }
+                       }
+
                    }
                    catch (Exception ex)
                    {

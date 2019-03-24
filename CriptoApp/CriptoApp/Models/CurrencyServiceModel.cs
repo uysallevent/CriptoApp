@@ -9,6 +9,7 @@ namespace CriptoApp.Models
 {
     public class CurrencyServiceModel : INotifyPropertyChanged
     {
+
         public string PriceToSymbol { get { return ToSymbol + Price.ToString(); } }
 
         public string CustomOPENDAY { get { return ToSymbol + OPENDAY.ToString(); } }
@@ -16,8 +17,6 @@ namespace CriptoApp.Models
         public string CustomLOWDAY { get { return ToSymbol + LOWDAY.ToString(); } }
 
         public string CustomHIGHDAY { get { return ToSymbol + HIGHDAY.ToString(); } }
-
-
 
         public string FromSymbol { get; set; }
 
@@ -80,7 +79,6 @@ namespace CriptoApp.Models
         }
 
         private decimal _OPENDAY;
-
         public decimal OPENDAY
         {
             get { return _OPENDAY; }

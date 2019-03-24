@@ -82,8 +82,23 @@ namespace CriptoApp.Services
             }
         }
 
-
-
+        public async Task<MobileResult> GetListAsync(UserPortfoyModel item)
+        {
+            MobileResult mobileResult = new MobileResult();
+            try
+            {
+                var Client = await GetClient();
+                var response = await Client.PostAsync(APIUrl + "UserPortfoy/GetPortfoyProfile", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
+                var ResponseContent = await response.Content.ReadAsStringAsync();
+                mobileResult = JsonConvert.DeserializeObject<MobileResult>(ResponseContent);
+                return mobileResult;
+            }
+            catch (Exception)
+            {
+                AlertHelper.MessageAlert(mobileResult.Message);
+                return mobileResult;
+            }
+        }
 
         public Task<MobileResult> GetItemAsync(string id)
         {

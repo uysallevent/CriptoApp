@@ -7,20 +7,25 @@ using Xamarin.Forms.Xaml;
 namespace CriptoApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class CriptoListPage : ContentPage
-	{
+    public partial class CriptoListPage : ContentPage
+    {
         CriptoListViewModel viewModel;
-		public CriptoListPage ()
-		{
-			InitializeComponent ();
+        public CriptoListPage()
+        {
+            InitializeComponent();
             dgCripto = new Xamarin.Forms.DataGrid.DataGrid();
-            BindingContext = new CriptoListViewModel(this.Navigation);
+            BindingContext = viewModel = new CriptoListViewModel(this.Navigation);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            //viewModel.ConnectSignalR();
+        }
+
+        protected override void OnDisappearing()
+        {
+            //viewModel.client.Stop();
+            base.OnDisappearing();
         }
     }
 }
