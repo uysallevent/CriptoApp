@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CriptoApp.Models
 {
-   public class BaseModel:INotifyPropertyChanged
+    public class BaseModel : INotifyPropertyChanged
     {
         public BaseModel()
         {
@@ -17,6 +17,8 @@ namespace CriptoApp.Models
         public int? IsDeleted { get; set; }
 
         public DateTime? Crated { get; set; }
+
+        public string CreatedDateFormat { get { return Crated.Value.ToString("dd.MM.yyyy"); } }
 
         public DateTime? Update { get; set; }
 

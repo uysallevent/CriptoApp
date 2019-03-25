@@ -18,7 +18,7 @@
         <Grid>
             <dg:DataGrid x:Name="dgCripto" 
                          ItemsSource="{Binding ListCriptoMoney}"  
-                         SelectedItem="{Binding selectedModel}"
+                         SelectedItem="{Binding selectedModel,Mode=TwoWay}"
                          SelectionEnabled="True" 
                          FontSize="15" 
                          BorderColor="#CCCCCC" 

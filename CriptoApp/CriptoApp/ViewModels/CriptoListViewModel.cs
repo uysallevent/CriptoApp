@@ -48,7 +48,7 @@ namespace CriptoApp.ViewModels
                     _selectedModel = value;
                     selectedItem = _selectedModel.FullName;
                     OnItemSelected(_selectedModel);
-                    selectedModel = null;
+                    _selectedModel = null;
                     OnPropertyChanged("selectedModel");
                 }
             }
