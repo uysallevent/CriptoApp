@@ -19,7 +19,6 @@ namespace CriptoApp.Views
 		{
 			InitializeComponent ();
             BindingContext = viewModel = new ProfileViewModel(selected);
-            grContent.BindingContext = selected;
 
         }
 	}

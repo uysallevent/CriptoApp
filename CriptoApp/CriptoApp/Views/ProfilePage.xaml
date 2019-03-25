@@ -8,7 +8,8 @@
              xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
              x:Class="CriptoApp.Views.ProfilePage"
              BackgroundImage="background.jpg"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             x:Name="CryptoProfilePage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Name="MenuItem1" Order="Primary" Icon="icon_plus.png" Text="Item 1" Command="{Binding OpenMenuItemCommand}" Priority="0" />
     </ContentPage.ToolbarItems>
@@ -19,12 +20,12 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackLayout Orientation="Horizontal" Grid.Row="0"  BackgroundColor="Black" Padding="30,10,10,10">
-                <Frame VerticalOptions="Fill"  BackgroundColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" WidthRequest="1" HeightRequest="1" CornerRadius="80">
+                <Frame VerticalOptions="Fill"  BackgroundColor="{Binding currencyServiceModel.Change, Converter={StaticResource StreakToColorConverter}}" WidthRequest="1" HeightRequest="1" CornerRadius="80">
                 </Frame>
-                <Label Text="{Binding ToSymbol}" FontSize="17" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Price}" TextColor="White" FontSize="25" VerticalTextAlignment="Center" Margin="0,0,10,0" HorizontalTextAlignment="Center"/>
-                <Label Text="(%)" FontSize="17" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Change24}" TextColor="{Binding Change,Converter={StaticResource StreakToColorConverter}}" FontSize="17"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding currencyServiceModel.ToSymbol}" FontSize="17" TextColor="White"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding currencyServiceModel.Price}" TextColor="White" FontSize="25" VerticalTextAlignment="Center" Margin="0,0,10,0" HorizontalTextAlignment="Center"/>
+                <Label Text="(%)" FontSize="17" TextColor="White"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding currencyServiceModel.Change24}" TextColor="White" FontSize="17"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
             </StackLayout>
             <Grid Grid.Row="1" BackgroundColor="#222" Padding="10">
                 <Grid.RowDefinitions>
@@ -37,20 +38,19 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Text="Son Güncelleme" Grid.Row="0" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
-                <Label Text="{Binding LASTUPDATE}" Grid.Row="0" Grid.Column="1" TextColor="White"/>
+                <Label Text="{Binding currencyServiceModel.LASTUPDATE}" Grid.Row="0" Grid.Column="1" TextColor="White"/>
 
                 <Label Text="Gün Açılışı" Grid.Row="1" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
-                <Label Text="{Binding CustomOPENDAY}" Grid.Row="1" Grid.Column="1" TextColor="White"/>
+                <Label Text="{Binding currencyServiceModel.CustomOPENDAY}" Grid.Row="1" Grid.Column="1" TextColor="White"/>
 
                 <Label Text="Günün Yükseği" Grid.Row="2" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
-                <Label Text="{Binding CustomHIGHDAY}" Grid.Row="2" Grid.Column="1" TextColor="White"/>
+                <Label Text="{Binding currencyServiceModel.CustomHIGHDAY}" Grid.Row="2" Grid.Column="1" TextColor="White"/>
 
                 <Label Text="Günün Düşüğü" Grid.Row="3" Grid.Column="0" TextColor="White" FontAttributes="Bold"/>
-                <Label Text="{Binding CustomLOWDAY}" Grid.Row="3" Grid.Column="1" TextColor="White"/>
+                <Label Text="{Binding currencyServiceModel.CustomLOWDAY}" Grid.Row="3" Grid.Column="1" TextColor="White"/>
             </Grid>
             <dg:DataGrid x:Name="dgCripto" 
-                         ItemsSource="{Binding ListUserPortfoy}"  
-                         SelectedItem="{Binding selectedModel}"
+                         ItemsSource="{Binding ListUserPortfoy}"
                          SelectionEnabled="True" 
                          FontSize="15" 
                          BorderColor="#CCCCCC" 
@@ -98,7 +98,7 @@
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
-                    <dg:DataGridColumn Title="DUEUM" PropertyName="{Binding .}" Width="1*">
+                    <dg:DataGridColumn Title="DURUM" PropertyName="{Binding .}" Width="1*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentView HorizontalOptions="Fill" VerticalOptions="Fill" Padding="10,0,0,0">

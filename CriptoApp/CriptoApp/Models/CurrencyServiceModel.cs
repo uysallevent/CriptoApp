@@ -35,7 +35,7 @@ namespace CriptoApp.Models
             get { return _Price; }
             set
             {
-                _Price = System.Math.Round(value, 3);
+                _Price = System.Math.Round(value, 2);
                 OnPropertyChange("Price");
             }
         }
