@@ -24,6 +24,20 @@ namespace CriptoApp.ViewModels
             set { _userPortfoyModel = value; OnPropertyChanged("userPortfoyModel"); }
         }
 
+        private UserPortfoyModel _SelectedItemForRemove;
+        public UserPortfoyModel SelectedItemForRemove
+        {
+            get
+            {
+                return _SelectedItemForRemove;
+            }
+            set
+            {
+                _SelectedItemForRemove = value;
+                OnPropertyChanged("SelectedItemForRemove");
+            }
+        }
+
         private ObservableCollection<UserPortfoyModel> _ListUserPortfoy;
         public ObservableCollection<UserPortfoyModel> ListUserPortfoy
         {
@@ -33,6 +47,7 @@ namespace CriptoApp.ViewModels
 
         public ICommand OpenMenuItemCommand { get; set; }
         public ICommand AddPortfoyCommand { get; set; }
+        public ICommand RemoveFromPortfoyCommmand { get; set; }
         public IList<UserPortfoyModel> JsonResult { get; private set; }
 
         private CurrencyServiceModel _currencyServiceModel;
@@ -54,14 +69,46 @@ namespace CriptoApp.ViewModels
             ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
             ListUserPortfoy = new ObservableCollection<UserPortfoyModel>();
             userPortfoyModel = new UserPortfoyModel();
+            SelectedItemForRemove = new UserPortfoyModel();
             OpenMenuItemCommand = new Command(OpenMenuItem);
             AddPortfoyCommand = new Command(async () => await AddPortfoy());
+            RemoveFromPortfoyCommmand = new Command(RemoveFromPortfoy);
             Device.BeginInvokeOnMainThread(async () => await GetPortfoyProfile());
             if (client == null)
                 client = new SignalRClient();
             client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
             client.ConnectionError += Client_ConnectionError;
             client.OnMessageReceived += Client_OnMessageReceived;
+        }
+
+        private void RemoveFromPortfoy(object obj)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                MobileResult mobileResult = new MobileResult();
+                try
+                {
+                    IsBusy = true;
+                    if (SelectedItemForRemove == null)
+                        return;
+                    var result = await PortfoyServiceDataStore.DeleteItemAsync((UserPortfoyModel)obj);
+                    if(result.Result)
+                    {
+                        ListUserPortfoy.Remove((UserPortfoyModel)obj);
+                        AlertHelper.MessageAlert(result.Message);
+                        var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
+                        App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
+                    }
+                }
+                catch (Exception)
+                {
+                    Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
+            });
         }
 
         private async Task GetPortfoyProfile()
@@ -76,8 +123,7 @@ namespace CriptoApp.ViewModels
             }
             catch (Exception)
             {
-
-                throw;
+                Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
             }
         }
 

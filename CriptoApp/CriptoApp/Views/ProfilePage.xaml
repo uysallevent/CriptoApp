@@ -51,13 +51,14 @@
             </Grid>
             <dg:DataGrid x:Name="dgCripto" 
                          ItemsSource="{Binding ListUserPortfoy}"
+                         SelectedItem="{Binding SelectedItem}"
                          SelectionEnabled="False" 
                          FontSize="15" 
                          BorderColor="#CCCCCC" 
                          HeaderTextColor="White" 
                          HeaderBackground="Black" 
                          RowHeight="50" 
-                         HeaderHeight="50" 
+                         HeaderHeight="30" 
                          VerticalOptions="FillAndExpand" 
                          HorizontalOptions="FillAndExpand"
                          Grid.Row="2">
@@ -68,35 +69,35 @@
                     <dg:DataGridColumn Title="FİYAT" PropertyName="{Binding .}" Width="1*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                        <Label Text="{Binding PurchasePrice}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                        <Label Text="{Binding PurchasePrice}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="13"/>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
                     <dg:DataGridColumn Title="ADET" PropertyName="{Binding .}" Width="1*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                        <Label Text="{Binding Quantity}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                <Label Text="{Binding Quantity}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="13"/>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
-                    <dg:DataGridColumn Title="DURUM" PropertyName="{Binding .}" Width="1*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <dg:DataGridColumn Title="STOP" PropertyName="{Binding .}" Width="1*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                        <Label Text="{Binding IsDeleted}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                <Label Text="{Binding StopLoss}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="13"/>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
                     <dg:DataGridColumn Title="TARİH" PropertyName="{Binding .}" Width="1*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                        <Label Text="{Binding CreatedDateFormat}" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                <Label Text="{Binding CreatedDateFormat}" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="13"/>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
                     <dg:DataGridColumn Title="" PropertyName="{Binding .}" Width="*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Text="X" FontSize="21" TextColor="Black" FontAttributes="Bold" Margin="10" Padding="0" BackgroundColor="#c13636" CornerRadius="10"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Button Text="X" FontSize="19" TextColor="Black" FontAttributes="Bold" Margin="10" Padding="0" BackgroundColor="#c13636" CornerRadius="10"  HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding}" Command="{Binding Path=BindingContext.RemoveFromPortfoyCommmand, Source={x:Reference CryptoProfilePage}}"/>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
@@ -115,7 +116,7 @@
             </Grid.Resources>
         </Grid>
 
-        <Grid BackgroundColor="Black" Opacity="0.8" Padding="80" IsVisible="{Binding PopupIsVisible}">
+        <Grid BackgroundColor="Black" Opacity="0.99" Padding="80" IsVisible="{Binding PopupIsVisible}">
             <xfx:XfxCardView CornerRadius="20" Padding="10,0,10,0">
                 <StackLayout>
                     <Label Text="Portföyüme Ekle" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>

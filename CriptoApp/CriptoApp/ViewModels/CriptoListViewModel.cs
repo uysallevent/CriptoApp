@@ -163,6 +163,16 @@ namespace CriptoApp.ViewModels
 
         private void Client_ConnectionError()
         {
+            try
+            {
+                if (client == null)
+                    client = new SignalRClient();
+                client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(ex.Message));
+            }
 
         }
 

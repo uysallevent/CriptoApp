@@ -53,7 +53,7 @@ namespace CriptoApp.Services
             try
             {
                 var Client = await GetClient();
-                var response = await Client.PostAsync(APIUrl + "api/Portfoy/IsDeletePortfoy", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
+                var response = await Client.PostAsync(APIUrl + "UserPortfoy/IsDelete", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
                 var ResponseContent = await response.Content.ReadAsStringAsync();
                 mobileResult = JsonConvert.DeserializeObject<MobileResult>(ResponseContent);
                 return mobileResult;

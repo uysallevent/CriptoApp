@@ -61,6 +61,8 @@ namespace CriptoApp.ViewModels
                                var Eklenecek = JsonListe.FirstOrDefault(x => x.FullName == item.CriptoName);
                                if (Eklenecek == null)
                                    continue;
+                               if (ListPortfoy.FirstOrDefault(x => x.FullName == item.CriptoName) != null)
+                                   continue;
                                ListPortfoy.Add(Eklenecek);
                            }
                        }
