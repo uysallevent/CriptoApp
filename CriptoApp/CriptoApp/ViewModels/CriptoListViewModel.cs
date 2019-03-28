@@ -19,7 +19,6 @@ namespace CriptoApp.ViewModels
         public SignalRClient client;
         IList<CurrencyServiceModel> model = new ObservableCollection<CurrencyServiceModel>();
         public ObservableCollection<CurrencyServiceModel> ListCriptoMoney { get; set; }
-        public ObservableCollection<CurrencyModel> ListCurrency { get; set; }
         private CurrencyModel _currencyModel;
         public CurrencyModel currencyModel
         {
@@ -54,35 +53,41 @@ namespace CriptoApp.ViewModels
             }
         }
         public INavigation Navigation { get; set; }
-        public ICommand SetVisibleCommand { get; set; }
+        public ICommand GotoUserPageCommand { get; set; }
+
 
         public CriptoListViewModel(INavigation navigation)
         {
             Title = "Kripto Paralar";
             Navigation = navigation;
-            ListCurrency = new ObservableCollection<CurrencyModel> {
-                new CurrencyModel(){Id=1,CurrencyName="LİRA",CurrencyShortening="CurrencyTRY" },
-                new CurrencyModel(){Id=2,CurrencyName="DOLAR",CurrencyShortening="CurrencyUSD" },
-                new CurrencyModel(){Id=3,CurrencyName="EURO",CurrencyShortening="CurrencyEUR" }
-            };
             currencyModel = new CurrencyModel();
-            SetVisibleCommand = new Command(SetVisible);
+            GotoUserPageCommand = new Command(async()=>await GotoUserPage());
             ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
-            if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
-                IsBusy = true;
-            if (client == null)
-                client = new SignalRClient();
-            client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
-            client.ConnectionError += Client_ConnectionError;
-            client.OnMessageReceived += Client_OnMessageReceived;
+            //if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
+            //    IsBusy = true;
+            //if (client == null)
+            //    client = new SignalRClient();
+            //client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
+            //client.ConnectionError += Client_ConnectionError;
+            //client.OnMessageReceived += Client_OnMessageReceived;
         }
 
-        private void SetVisible(object obj)
+        private async Task  GotoUserPage()
         {
-            if (PopupIsVisible)
-                PopupIsVisible = false;
-            else
-                PopupIsVisible = true;
+            try
+            {
+                IsBusy = true;
+                await Navigation.PushModalAsync(new UserSettingsPage());
+            }
+            catch (System.Exception)
+            {
+
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
         }
 
         private async void OnItemSelected(CurrencyServiceModel Selected)

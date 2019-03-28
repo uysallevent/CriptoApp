@@ -12,7 +12,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Name="MenuItem1" Order="Primary" Icon="icon_filter.png" Text="Filtre" Priority="0" />
         <ToolbarItem Name="MenuItem2" Order="Primary" Icon="icon_sort.png" Text="Sırala" Priority="1" />
-        <ToolbarItem Name="MenuItem2" Order="Primary" Icon="icon_currency.png" Text="Para Birimi" Priority="2" Command="{Binding SetVisibleCommand}" />
+        <ToolbarItem Name="MenuItem2" Order="Primary" Icon="icon_user.png" Text="Para Birimi" Priority="2" Command="{Binding GotoUserPageCommand}" />
     </ContentPage.ToolbarItems>
     <Grid>  
         <Grid>
@@ -75,24 +75,6 @@
                     </ResourceDictionary>
                 </dg:DataGrid.Resources>
             </dg:DataGrid>
-        </Grid>
-        <Grid x:Name="grPopup" IsVisible="{Binding PopupIsVisible}" BackgroundColor="Black" Opacity="0.8" RowSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Label Text="Para Birimini Seçin" TextColor="White" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="1" />
-            <xfx:XfxCardView BackgroundColor="White" CornerRadius="20" Margin="60,0,60,0" Padding="20" Grid.Row="2">
-                <StackLayout>
-                    <Picker ItemsSource="{Binding ListCurrency}" ItemDisplayBinding="{Binding CurrencyName}" SelectedItem="{Binding currencyModel}"  Title="Para Birimi Seçin"/>
-                </StackLayout>
-            </xfx:XfxCardView>
-            <Button Text="Kaydet"  HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="3"/>
-            <Button Text="Kapat" Command="{Binding SetVisibleCommand,Mode=TwoWay}" BackgroundColor="Black" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="4"/>
         </Grid>
         <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
             <Grid.RowDefinitions>

@@ -30,7 +30,6 @@ namespace CriptoApp.ViewModels
         public bool PopupIsVisible
         {
             get { return popupIsVisible; }
-            //set { SetProperty(ref popupIsVisible, value); }
             set { popupIsVisible = value;OnPropertyChanged("PopupIsVisible"); }
         }
 
