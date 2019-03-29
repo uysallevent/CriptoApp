@@ -17,7 +17,7 @@ namespace CriptoApp.Services
             try
             {
                 var Client = await GetClient();
-                var response = await Client.GetStringAsync(APIUrl + "api/User/Login?Email=" + Email + "&Password=" + Password);
+                var response = await Client.GetStringAsync(APIUrl + "User/Login?Email=" + Email + "&Password=" + Password);
                 mobileResult = JsonConvert.DeserializeObject<MobileResult>(response);
                 return mobileResult;
             }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CriptoApp.Services
 {
@@ -17,14 +18,33 @@ namespace CriptoApp.Services
             try
             {
                 var Client = await GetClient();
-                var response = await Client.PostAsync(APIUrl + "api/User/AddUser", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
+                var response = await Client.PostAsync(APIUrl + "User/Add", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
                 var ResponseContent = await response.Content.ReadAsStringAsync();
                 mobileResult = JsonConvert.DeserializeObject<MobileResult>(ResponseContent);
                 return mobileResult;
             }
             catch (Exception)
             {
-                AlertHelper.MessageAlert(mobileResult.Message);
+                Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
+                return mobileResult;
+            }
+
+        }
+
+        public async Task<MobileResult> UpdateItemAsync(UserModel item)
+        {
+            MobileResult mobileResult = new MobileResult();
+            try
+            {
+                var Client = await GetClient();
+                var response = await Client.PostAsync(APIUrl + "User/Update", new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json"));
+                var ResponseContent = await response.Content.ReadAsStringAsync();
+                mobileResult = JsonConvert.DeserializeObject<MobileResult>(ResponseContent);
+                return mobileResult;
+            }
+            catch (Exception)
+            {
+                Device.BeginInvokeOnMainThread(()=> AlertHelper.MessageAlert(mobileResult.Message));
                 return mobileResult;
             }
 
@@ -60,9 +80,5 @@ namespace CriptoApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<MobileResult> UpdateItemAsync(UserModel item)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

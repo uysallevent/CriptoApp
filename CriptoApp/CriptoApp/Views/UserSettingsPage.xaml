@@ -10,58 +10,68 @@
     <ContentPage.BindingContext>
         <vm:UserSettingsViewModel/>
     </ContentPage.BindingContext>
-    <Grid>
-        <Grid RowSpacing="0" ColumnSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <xfx:XfxCardView  BackgroundColor="Transparent" Opacity="0.9" Grid.Row="1" Margin="5,0,5,0" Padding="25,25,1,1" CornerRadius="20">
-                <StackLayout  Padding="0" Margin="0">
-                    <Button Text="KULLANICI BİLGİLERİ" CornerRadius="5" HorizontalOptions="FillAndExpand" BackgroundColor="Black" TextColor="White" FontAttributes="Bold" FontSize="19"
+    <ContentPage.Content>
+
+        <Grid>
+            <Grid RowSpacing="0" ColumnSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <xfx:XfxCardView  BackgroundColor="Transparent" Opacity="0.9" Grid.Row="1" Margin="5,0,5,0" Padding="25,25,1,1" CornerRadius="20">
+                    <StackLayout  Padding="0" Margin="0">
+                        <Button Text="KULLANICI BİLGİLERİ" CornerRadius="5" HorizontalOptions="FillAndExpand" BackgroundColor="Black" TextColor="White" FontAttributes="Bold" FontSize="19"
                             Command="{Binding UserInfoPopupIsVisibleCommand}"/>
-                    <Button Text="ŞİFRE İŞLEMLERİ" CornerRadius="5" HorizontalOptions="FillAndExpand" BackgroundColor="Black" TextColor="White" FontAttributes="Bold" FontSize="19" Command="{Binding UserPasswordPopupIsVisibleCommand}}"/>
-                    <Button Text="GERİ" CornerRadius="5" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" TextColor="White" FontAttributes="Bold" FontSize="15"/>
+                        <Button Text="ŞİFRE İŞLEMLERİ" CornerRadius="5" HorizontalOptions="FillAndExpand" BackgroundColor="Black" TextColor="White" FontAttributes="Bold" FontSize="19" Command="{Binding UserPasswordPopupIsVisibleCommand}}"/>
+                        <Button Text="GERİ" CornerRadius="5" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" TextColor="White" FontAttributes="Bold" FontSize="15" Command="{Binding BackButtonCommand}"/>
+                    </StackLayout>
+                </xfx:XfxCardView>
+            </Grid>
+            <Grid IsVisible="{Binding UserInfoPopupIsVisible}">
+                <xfx:XfxCardView HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="White" Opacity="0.9" Padding="20,20,2,2" Margin="10" CornerRadius="20" >
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <xfx:XfxEntry Placeholder="Adınız" ErrorDisplay="None" Text="{Binding User.Name}"/>
+                        <xfx:XfxEntry Placeholder="Soyadınız" ErrorDisplay="None" Text="{Binding User.SurName}"/>
+                        <xfx:XfxEntry Placeholder="Email Adresiniz" ErrorDisplay="None" Keyboard="Email" Text="{Binding User.Email}"/>
+                        <xfx:XfxEntry Placeholder="GSM" ErrorDisplay="None" Keyboard="Email" Text="{Binding User.Phone}"/>
+                        <Button Text="Güncelle" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding UserInfoUpdateCommand}"/>
+                        <Button Text="GERİ" TextColor="Black" Opacity="0.7" BackgroundColor="White" HorizontalOptions="Center" CornerRadius="20" Command="{Binding UserInfoPopupIsVisibleCommand}"/>
+                    </StackLayout>
+                </xfx:XfxCardView>
+            </Grid>
+            <Grid IsVisible="{Binding UserPasswordPopupIsVisible}">
+                <xfx:XfxCardView HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="White" Opacity="0.9" Padding="20,20,2,2" Margin="10" CornerRadius="20" >
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <xfx:XfxEntry x:Name="EskiSifre" Placeholder="Eski Şifre" ErrorDisplay="None" IsPassword="True" Text="{Binding OldPassword}"/>
+                        <xfx:XfxEntry x:Name="YeniSifre" Placeholder="Yeni Şifre" ErrorDisplay="None" IsPassword="True" Text="{Binding NewPassword}">
+                            <xfx:XfxEntry.Behaviors>
+                                <behaviors:XfxEntryPassValidator />
+                            </xfx:XfxEntry.Behaviors>
+                        </xfx:XfxEntry>
+                        <xfx:XfxEntry x:Name="entSifreTekrar" Placeholder="Yeni Şifre Tekrar" ErrorDisplay="None">
+                            <xfx:XfxEntry.Behaviors>
+                                <behaviors:XfxEntryPassValidator />
+                            </xfx:XfxEntry.Behaviors>
+                        </xfx:XfxEntry>
+                        <Button Text="Güncelle" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding UserPasswordUpdateCommand}"/>
+                        <Button Text="GERİ" TextColor="Black" Opacity="0.7" BackgroundColor="White" HorizontalOptions="Center" CornerRadius="20" Command="{Binding UserPasswordPopupIsVisibleCommand}"/>
+                    </StackLayout>
+                </xfx:XfxCardView>
+            </Grid>
+
+            <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="1">
+                    <Label Text="Yükleniyor Lütfen Bekleyin" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <ActivityIndicator IsVisible="{Binding IsBusy,Mode=OneWay}" IsRunning="{Binding IsBusy,Mode=OneWay}" HorizontalOptions="Center"/>
                 </StackLayout>
-            </xfx:XfxCardView>
+            </Grid>
         </Grid>
-        <xfx:XfxCardView HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="White" Opacity="0.9" Padding="20,20,2,2" Margin="10" CornerRadius="20" IsVisible="{Binding UserInfoPopupIsVisible}">
-            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                <xfx:XfxEntry Placeholder="Adınız" ErrorDisplay="None" Text="{Binding User.Name}"/>
-                <xfx:XfxEntry Placeholder="Soyadınız" ErrorDisplay="None" Text="{Binding User.SurName}"/>
-                <xfx:XfxEntry Placeholder="Email Adresiniz" ErrorDisplay="None" Keyboard="Email" Text="{Binding User.Email}"/>
-                <xfx:XfxEntry Placeholder="GSM" ErrorDisplay="None" Keyboard="Email" Text="{Binding User.Phone}"/>
-                <Button Text="Kayıt Ol" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding UserRegisterCommand}"/>
-                <Button Text="GERİ" TextColor="Black" Opacity="0.7" BackgroundColor="White" HorizontalOptions="Center" CornerRadius="20" Command="{Binding UserInfoPopupIsVisibleCommand}"/>
-            </StackLayout>
-        </xfx:XfxCardView>
-        <xfx:XfxCardView HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="White" Opacity="0.9" Padding="20,20,2,2" Margin="10" CornerRadius="20" IsVisible="{Binding UserPasswordPopupIsVisible}">
-            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                <xfx:XfxEntry x:Name="Sifre" Placeholder="Şifre" ErrorDisplay="None" IsPassword="True" Text="{Binding User.Password}">
-                    <xfx:XfxEntry.Behaviors>
-                        <behaviors:XfxEntryPassValidator />
-                    </xfx:XfxEntry.Behaviors>
-                </xfx:XfxEntry>
-                <xfx:XfxEntry x:Name="entSifreTekrar" Placeholder="Şifre Tekrar" ErrorDisplay="None">
-                    <xfx:XfxEntry.Behaviors>
-                        <behaviors:XfxEntryPassValidator />
-                    </xfx:XfxEntry.Behaviors>
-                </xfx:XfxEntry>
-                <Button Text="Kayıt Ol" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding UserRegisterCommand}" IsVisible="{Binding RegisterButtonIsEnable}"/>
-                <Button Text="GERİ" TextColor="Black" Opacity="0.7" BackgroundColor="White" HorizontalOptions="Center" CornerRadius="20" Command="{Binding UserInfoPopupIsVisibleCommand}"/>
-            </StackLayout>
-        </xfx:XfxCardView>
-        <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackLayout Grid.Row="1">
-                <Label Text="Yükleniyor Lütfen Bekleyin" HorizontalTextAlignment="Center" TextColor="White"/>
-                <ActivityIndicator IsVisible="{Binding IsBusy,Mode=OneWay}" IsRunning="{Binding IsBusy,Mode=OneWay}" HorizontalOptions="Center"/>
-            </StackLayout>
-        </Grid>
-    </Grid>
+    </ContentPage.Content>
+
 </ContentPage>
