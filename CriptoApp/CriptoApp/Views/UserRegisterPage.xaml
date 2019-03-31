@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CriptoApp.Views.UserRegisterPage"
              xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
+             xmlns:behaviors="clr-namespace:CriptoApp.Helper"
              xmlns:vm="clr-namespace:CriptoApp.ViewModels"
              xmlns:cp="clr-namespace:CriptoApp.Helper"
              BackgroundImage="background.jpg">
@@ -19,10 +20,18 @@
                 <StackLayout>
                     <xfx:XfxEntry Placeholder="Adınız" ErrorDisplay="None" Text="{Binding UserModel.Name}"/>
                     <xfx:XfxEntry Placeholder="Soyadınız" ErrorDisplay="None" Text="{Binding UserModel.SurName}"/>
-                    <xfx:XfxEntry Placeholder="Email Adresiniz" ErrorDisplay="None" Keyboard="Email" Text="{Binding UserModel.Email}"/>
+                    <xfx:XfxEntry Placeholder="Email Adresiniz" ErrorDisplay="None" Keyboard="Email" Text="{Binding UserModel.Email}">
+                        <xfx:XfxEntry.Behaviors>
+                            <behaviors:EmailValidatorBehavior/>
+                        </xfx:XfxEntry.Behaviors>
+                    </xfx:XfxEntry>
                     <xfx:XfxEntry Placeholder="GSM" ErrorDisplay="None" Keyboard="Email" Text="{Binding UserModel.Phone}"/>
-                    <xfx:XfxEntry Placeholder="Şifre" IsPassword="True" ErrorDisplay="None" Text="{Binding UserModel.Password}"/>
-                    <xfx:XfxEntry Placeholder="Şifre Tekrar" IsPassword="True" ErrorDisplay="None"/>
+                    <xfx:XfxEntry x:Name="entPassword" Placeholder="Şifre" IsPassword="True" ErrorDisplay="None" Text="{Binding UserModel.Password}"/>
+                    <xfx:XfxEntry Placeholder="Şifre Tekrar" IsPassword="True" ErrorDisplay="Underline">
+                        <xfx:XfxEntry.Behaviors>
+                            <behaviors:CompareValidationBehavior BindingContext="{x:Reference entPassword}" Text="{Binding Text}" />
+                        </xfx:XfxEntry.Behaviors>
+                    </xfx:XfxEntry>
 
                     <Button Text="Kayıt Ol" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding UserRegisterCommand}"/>
                     <Button Text="GERİ" TextColor="Black" Opacity="0.7" BackgroundColor="White" HorizontalOptions="Center" CornerRadius="20" Command="{Binding OnBackActionCommand}"/>

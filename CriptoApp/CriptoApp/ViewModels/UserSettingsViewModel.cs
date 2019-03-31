@@ -40,6 +40,7 @@ namespace CriptoApp.ViewModels
             UserInfoUpdateCommand = new Command(async () => await UserInfoUpdate());
             UserPasswordUpdateCommand = new Command(async () => await UserPasswordUpdate());
             BackButtonCommand = new Command(async()=> { await Application.Current.MainPage.Navigation.PopModalAsync(); });
+            RegisterButtonIsEnable = true;
         }
 
         private async Task UserPasswordUpdate()
@@ -47,6 +48,11 @@ namespace CriptoApp.ViewModels
             MobileResult result = new MobileResult();
             try
             {
+                if(string.IsNullOrEmpty(NewPassword)||string.IsNullOrEmpty(OldPassword))
+                {
+                    Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert("Lütfen Mevcut Şifrenizi ve Yeni Şifrenizi Girin !!"));
+                    return;
+                }
                 if (MD5Transactions.MD5eDonustur(OldPassword) == App.LoginModel.Password)
                 {
                     IsBusy = true;
@@ -111,7 +117,7 @@ namespace CriptoApp.ViewModels
             set { _UserPasswordPopupIsVisible = value; OnPropertyChanged("UserPasswordPopupIsVisible"); }
         }
 
-        bool _RegisterButtonIsEnable = false;
+        bool _RegisterButtonIsEnable;
         public bool RegisterButtonIsEnable
         {
             get { return _RegisterButtonIsEnable; }

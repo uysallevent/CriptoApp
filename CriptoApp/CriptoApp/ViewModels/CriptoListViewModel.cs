@@ -63,13 +63,13 @@ namespace CriptoApp.ViewModels
             currencyModel = new CurrencyModel();
             GotoUserPageCommand = new Command(async()=>await GotoUserPage());
             ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
-            //if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
-            //    IsBusy = true;
-            //if (client == null)
-            //    client = new SignalRClient();
-            //client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
-            //client.ConnectionError += Client_ConnectionError;
-            //client.OnMessageReceived += Client_OnMessageReceived;
+            if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
+                IsBusy = true;
+            if (client == null)
+                client = new SignalRClient();
+            client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
+            client.ConnectionError += Client_ConnectionError;
+            client.OnMessageReceived += Client_OnMessageReceived;
         }
 
         private async Task  GotoUserPage()
