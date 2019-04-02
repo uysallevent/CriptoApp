@@ -3,7 +3,6 @@ using CriptoApp.Models;
 using CriptoApp.Services;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +14,10 @@ namespace CriptoApp.ViewModels
 {
     public class ProfileViewModel : BaseViewModel
     {
+        private readonly IPortfoyRepository _portfoyRepository;
+
         public SignalRClient client;
+
         public ObservableCollection<CurrencyServiceModel> ListCriptoMoney { get; set; }
         private UserPortfoyModel _userPortfoyModel;
         public UserPortfoyModel userPortfoyModel
@@ -61,10 +63,10 @@ namespace CriptoApp.ViewModels
             }
         }
 
-
-        public ProfileViewModel(CurrencyServiceModel model)
+        public ProfileViewModel(CurrencyServiceModel model,IPortfoyRepository portfoyRepository)
         {
             Title = model.FullName + " - " + model.FromSymbol;
+            _portfoyRepository = portfoyRepository;
             currencyServiceModel = model;
             ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
             ListUserPortfoy = new ObservableCollection<UserPortfoyModel>();
@@ -92,7 +94,7 @@ namespace CriptoApp.ViewModels
                     if (SelectedItemForRemove == null)
                         return;
                     var result = await PortfoyServiceDataStore.DeleteItemAsync((UserPortfoyModel)obj);
-                    if(result.Result)
+                    if (result.Result)
                     {
                         ListUserPortfoy.Remove((UserPortfoyModel)obj);
                         AlertHelper.MessageAlert(result.Message);
@@ -120,6 +122,8 @@ namespace CriptoApp.ViewModels
                 ListUserPortfoy.Clear();
                 var result = await PortfoyServiceDataStore.GetListAsync(SendModel);
                 ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(result.Content.ToString());
+                var a = await _portfoyRepository.GetPortfoyAsync();
+                DependencyService.Get<IServiceHelper>().StartIntentService();
             }
             catch (Exception)
             {
@@ -151,12 +155,13 @@ namespace CriptoApp.ViewModels
                 mobileResult = await PortfoyServiceDataStore.AddItemAsync(userPortfoyModel);
                 if (mobileResult.Result)
                 {
+                    await _portfoyRepository.AddPortfoyAsync(userPortfoyModel);
                     var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
                     App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
                     Device.BeginInvokeOnMainThread(async () => await GetPortfoyProfile());
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
             }

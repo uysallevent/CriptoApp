@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace CriptoApp.Models
 {
@@ -12,6 +10,7 @@ namespace CriptoApp.Models
         {
             Crated = DateTime.Now;
         }
+
         public int Id { get; set; }
 
         public int? IsDeleted { get; set; }

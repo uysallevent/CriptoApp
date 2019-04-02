@@ -13,11 +13,14 @@ namespace CriptoApp
     public partial class App : Application
     {
 
-        public App()
+        public App(IPortfoyRepository portfoyRepository)
         {
             InitializeComponent();
+            _portfoyRepository = portfoyRepository;
             MainPage = new LoginPage();
         }
+
+        public static IPortfoyRepository _portfoyRepository;
 
         public static UserModel LoginModel { get; set; }
 

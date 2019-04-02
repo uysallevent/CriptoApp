@@ -18,7 +18,7 @@ namespace CriptoApp.Views
         public ProfilePage (CurrencyServiceModel selected)
 		{
 			InitializeComponent ();
-            BindingContext = viewModel = new ProfileViewModel(selected);
+            BindingContext = viewModel = new ProfileViewModel(selected,App._portfoyRepository);
 
         }
 	}

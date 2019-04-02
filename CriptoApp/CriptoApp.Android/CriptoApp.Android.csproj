@@ -52,6 +52,12 @@
     <PackageReference Include="Microsoft.AspNet.SignalR.Client">
       <Version>2.4.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
+      <Version>2.2.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Buffers">
+      <Version>4.5.0</Version>
+    </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>3.1.1</Version>
     </PackageReference>
@@ -66,10 +72,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\ServiceHelper.cs" />
     <Compile Include="Helper\ToastHelper.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\PortfoyNotifierService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -100,6 +108,10 @@
     <Folder Include="Resources\drawable-xxhdpi\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CriptoApp.SQLite\CriptoApp.SQLite.csproj">
+      <Project>{1E970623-01EE-405D-AA77-756805F10DC4}</Project>
+      <Name>CriptoApp.SQLite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CriptoApp\CriptoApp.csproj">
       <Project>{40902E9C-B3A0-4C0D-8D40-194D18FDD186}</Project>
       <Name>CriptoApp</Name>
