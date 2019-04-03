@@ -31,11 +31,6 @@ namespace CriptoApp.Droid
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App(userPortfoyRepository));
-
-            //Intent intent = new Intent(this, typeof(PortfoyNotifierService));
-            //intent.PutExtra("Test_Message", "Hello, ");
-            //Toast.MakeText(this, "Send Test_Message to IntenService Service Class", ToastLength.Long).Show();
-            //StartService(intent);
         }
 
     }

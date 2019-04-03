@@ -18,15 +18,17 @@ namespace CriptoApp.Droid.Helper
 {
     public class ServiceHelper : IServiceHelper
     {
+        Intent intent = new Intent(Application.Context, typeof(PortfoyNotifierService));
+
         public void StartIntentService()
         {
-            Intent intent = new Intent(Application.Context, typeof(PortfoyNotifierService));
             Application.Context.StartService(intent);
         }
 
         public void StopIntentService()
         {
-           
+            Application.Context.StopService(intent);
+
         }
     }
 }

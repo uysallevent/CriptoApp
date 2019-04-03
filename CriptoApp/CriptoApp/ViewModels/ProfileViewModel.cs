@@ -63,7 +63,7 @@ namespace CriptoApp.ViewModels
             }
         }
 
-        public ProfileViewModel(CurrencyServiceModel model,IPortfoyRepository portfoyRepository)
+        public ProfileViewModel(CurrencyServiceModel model, IPortfoyRepository portfoyRepository)
         {
             Title = model.FullName + " - " + model.FromSymbol;
             _portfoyRepository = portfoyRepository;
@@ -97,6 +97,7 @@ namespace CriptoApp.ViewModels
                     if (result.Result)
                     {
                         ListUserPortfoy.Remove((UserPortfoyModel)obj);
+                        await _portfoyRepository.RemovePortfoyAsync(((UserPortfoyModel)obj).Id);
                         AlertHelper.MessageAlert(result.Message);
                         var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
                         App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
@@ -122,7 +123,6 @@ namespace CriptoApp.ViewModels
                 ListUserPortfoy.Clear();
                 var result = await PortfoyServiceDataStore.GetListAsync(SendModel);
                 ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(result.Content.ToString());
-                var a = await _portfoyRepository.GetPortfoyAsync();
                 DependencyService.Get<IServiceHelper>().StartIntentService();
             }
             catch (Exception)
@@ -155,10 +155,11 @@ namespace CriptoApp.ViewModels
                 mobileResult = await PortfoyServiceDataStore.AddItemAsync(userPortfoyModel);
                 if (mobileResult.Result)
                 {
-                    await _portfoyRepository.AddPortfoyAsync(userPortfoyModel);
                     var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
                     App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
                     Device.BeginInvokeOnMainThread(async () => await GetPortfoyProfile());
+                    await Task.Run(() => _portfoyRepository.AddPortfoyAsync(userPortfoyModel));
+
                 }
             }
             catch (Exception ex)
