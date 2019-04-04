@@ -64,6 +64,7 @@ namespace CriptoApp.Droid.Service
         private void Client_ConnectionError()
         {
 
+
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
