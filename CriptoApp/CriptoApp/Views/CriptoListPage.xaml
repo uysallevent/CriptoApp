@@ -53,7 +53,7 @@
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
-                    <dg:DataGridColumn Title="DEĞİŞİM(24s)(%)" PropertyName="{Binding .}" Width="0.95*">
+                    <dg:DataGridColumn Title="DEĞ(24s)(%)" PropertyName="{Binding .}" Width="0.95*">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentView HorizontalOptions="Fill" VerticalOptions="Fill">

@@ -77,7 +77,8 @@ namespace CriptoApp.SQLite
         {
             try
             {
-                var Portfoy = await _databaseContext.UserPortfoy.FindAsync(id);
+                //var Portfoy = await _databaseContext.UserPortfoy.FindAsync(id);
+                var Portfoy =  _databaseContext.UserPortfoy.FirstOrDefault(x => x.SQLServerID == id);
                 var Delete = _databaseContext.Remove(Portfoy);
                 await _databaseContext.SaveChangesAsync();
                 var Deleted = Delete.State == EntityState.Deleted;

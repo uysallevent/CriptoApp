@@ -1,11 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CriptoApp.Models
+﻿namespace CriptoApp.Models
 {
     public class UserPortfoyModel : BaseModel
     {
+
+        private int _SQLServerID;
+        public int SQLServerID
+        {
+            get { return _SQLServerID; }
+            set
+            {
+                _SQLServerID = value;
+                OnPropertyChange("SQLServerID");
+            }
+        }
         public int UserId { get; set; }
 
         private string _CriptoName;
@@ -34,7 +41,9 @@ namespace CriptoApp.Models
         public decimal Price
         {
             get { return _Price; }
-            set { _Price = value;
+            set
+            {
+                _Price = value;
                 OnPropertyChange("Price");
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -11,6 +12,7 @@ namespace CriptoApp.Models
             Crated = DateTime.Now;
         }
 
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
         public int? IsDeleted { get; set; }

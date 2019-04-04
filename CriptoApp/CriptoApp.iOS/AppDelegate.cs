@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using CriptoApp.SQLite;
-using Foundation;
+﻿using Foundation;
 using UIKit;
 using Xfx;
 
@@ -24,14 +19,10 @@ namespace CriptoApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            SQLitePCL.Batteries.Init();
-            var dbPath = Path.Combine(Environment.GetFolderPath
-                (Environment.SpecialFolder.MyDocuments),"..","Library", "portfoyDB.db");
-            var userPortfoyRepository = new UserPortfoyRepository(dbPath);
 
             XfxControls.Init();
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App(userPortfoyRepository));
+            LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
         }

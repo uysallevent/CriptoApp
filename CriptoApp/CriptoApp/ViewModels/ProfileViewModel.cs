@@ -14,9 +14,8 @@ namespace CriptoApp.ViewModels
 {
     public class ProfileViewModel : BaseViewModel
     {
-        private readonly IPortfoyRepository _portfoyRepository;
-
         public SignalRClient client;
+        private SQLiteManager _SQLiteManager;
 
         public ObservableCollection<CurrencyServiceModel> ListCriptoMoney { get; set; }
         private UserPortfoyModel _userPortfoyModel;
@@ -63,10 +62,9 @@ namespace CriptoApp.ViewModels
             }
         }
 
-        public ProfileViewModel(CurrencyServiceModel model, IPortfoyRepository portfoyRepository)
+        public ProfileViewModel(CurrencyServiceModel model)
         {
             Title = model.FullName + " - " + model.FromSymbol;
-            _portfoyRepository = portfoyRepository;
             currencyServiceModel = model;
             ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
             ListUserPortfoy = new ObservableCollection<UserPortfoyModel>();
@@ -76,42 +74,13 @@ namespace CriptoApp.ViewModels
             AddPortfoyCommand = new Command(async () => await AddPortfoy());
             RemoveFromPortfoyCommmand = new Command(RemoveFromPortfoy);
             Device.BeginInvokeOnMainThread(async () => await GetPortfoyProfile());
+            if (_SQLiteManager == null)
+                _SQLiteManager = new SQLiteManager();
             if (client == null)
                 client = new SignalRClient();
             client.Connect(App.LoginModel.Id.ToString() + "-" + "CryptoListe");
             client.ConnectionError += Client_ConnectionError;
             client.OnMessageReceived += Client_OnMessageReceived;
-        }
-
-        private void RemoveFromPortfoy(object obj)
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                MobileResult mobileResult = new MobileResult();
-                try
-                {
-                    IsBusy = true;
-                    if (SelectedItemForRemove == null)
-                        return;
-                    var result = await PortfoyServiceDataStore.DeleteItemAsync((UserPortfoyModel)obj);
-                    if (result.Result)
-                    {
-                        ListUserPortfoy.Remove((UserPortfoyModel)obj);
-                        await _portfoyRepository.RemovePortfoyAsync(((UserPortfoyModel)obj).Id);
-                        AlertHelper.MessageAlert(result.Message);
-                        var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
-                        App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
-                    }
-                }
-                catch (Exception)
-                {
-                    Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
-            });
         }
 
         private async Task GetPortfoyProfile()
@@ -123,7 +92,6 @@ namespace CriptoApp.ViewModels
                 ListUserPortfoy.Clear();
                 var result = await PortfoyServiceDataStore.GetListAsync(SendModel);
                 ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(result.Content.ToString());
-                DependencyService.Get<IServiceHelper>().StartIntentService();
             }
             catch (Exception)
             {
@@ -153,13 +121,13 @@ namespace CriptoApp.ViewModels
                 userPortfoyModel.UserId = App.LoginModel.Id;
                 userPortfoyModel.IsDeleted = 0;
                 mobileResult = await PortfoyServiceDataStore.AddItemAsync(userPortfoyModel);
+                userPortfoyModel.SQLServerID = JsonConvert.DeserializeObject<UserPortfoyModel>(mobileResult.Content.ToString()).Id;
                 if (mobileResult.Result)
                 {
+                    _SQLiteManager.Insert(userPortfoyModel);
                     var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
                     App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
                     Device.BeginInvokeOnMainThread(async () => await GetPortfoyProfile());
-                    await Task.Run(() => _portfoyRepository.AddPortfoyAsync(userPortfoyModel));
-
                 }
             }
             catch (Exception ex)
@@ -173,7 +141,38 @@ namespace CriptoApp.ViewModels
                 PopupIsVisible = false;
                 IsBusy = false;
             }
+        }
 
+        private void RemoveFromPortfoy(object obj)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                MobileResult mobileResult = new MobileResult();
+                try
+                {
+                    IsBusy = true;
+                    if (SelectedItemForRemove == null)
+                        return;
+                    var result = await PortfoyServiceDataStore.DeleteItemAsync((UserPortfoyModel)obj);
+                    if (result.Result)
+                    {
+                        var deleted = JsonConvert.DeserializeObject<UserPortfoyModel>(result.Content.ToString());
+                        _SQLiteManager.DeleteWithSQLServerId(deleted.Id);
+                        var ListPortfoy = await PortfoyServiceDataStore.GetListAsync(App.LoginModel.Id);
+                        App.ListUserPortfoy = JsonConvert.DeserializeObject<ObservableCollection<UserPortfoyModel>>(ListPortfoy.Content.ToString());
+                        ListUserPortfoy.Remove((UserPortfoyModel)obj);
+                        AlertHelper.MessageAlert(result.Message);
+                    }
+                }
+                catch (Exception)
+                {
+                    Device.BeginInvokeOnMainThread(() => AlertHelper.MessageAlert(mobileResult.Message));
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
+            });
         }
 
         private void OpenMenuItem(object obj)

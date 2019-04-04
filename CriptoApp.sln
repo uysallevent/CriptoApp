@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriptoApp.iOS", "CriptoApp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CriptoApp", "CriptoApp\CriptoApp\CriptoApp.csproj", "{22F952FD-42FB-4397-8E4F-6B78791FCAAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriptoApp.SQLite", "CriptoApp.SQLite\CriptoApp.SQLite.csproj", "{1E970623-01EE-405D-AA77-756805F10DC4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,18 +73,6 @@ Global
 		{22F952FD-42FB-4397-8E4F-6B78791FCAAA}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{22F952FD-42FB-4397-8E4F-6B78791FCAAA}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{22F952FD-42FB-4397-8E4F-6B78791FCAAA}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Release|iPhone.Build.0 = Release|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{1E970623-01EE-405D-AA77-756805F10DC4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

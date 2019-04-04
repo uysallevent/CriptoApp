@@ -70,6 +70,7 @@ namespace CriptoApp.ViewModels
             try
             {
                 IsBusy = true;
+                DependencyService.Get<IServiceHelper>().StartIntentService();
                 await Navigation.PushModalAsync(new MainPage());
             }
             catch (System.Exception)

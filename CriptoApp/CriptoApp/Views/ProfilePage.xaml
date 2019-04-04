@@ -83,7 +83,7 @@
                     <dg:DataGridColumn Title="STOP" PropertyName="{Binding .}" Width="1*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                         <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Text="{Binding StopLoss}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="13"/>
+                                <Label Text="{Binding StopLoss}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"  FontSize="13"/>
                             </DataTemplate>
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
@@ -102,6 +102,11 @@
                         </dg:DataGridColumn.CellTemplate>
                     </dg:DataGridColumn>
                 </dg:DataGrid.Columns>
+                <dg:DataGrid.RowsTextColorPalette>
+                    <dg:PaletteCollection>
+                        <Color>#FFFFFF</Color>
+                    </dg:PaletteCollection>
+                </dg:DataGrid.RowsTextColorPalette>
                 <dg:DataGrid.RowsBackgroundColorPalette>
                     <dg:PaletteCollection>
                         <Color>#454444</Color>
