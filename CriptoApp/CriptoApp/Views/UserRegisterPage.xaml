@@ -4,8 +4,7 @@
              x:Class="CriptoApp.Views.UserRegisterPage"
              xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
              xmlns:behaviors="clr-namespace:CriptoApp.Helper"
-             xmlns:vm="clr-namespace:CriptoApp.ViewModels"
-             xmlns:cp="clr-namespace:CriptoApp.Helper"
+             xmlns:validators="clr-namespace:CriptoApp.Validator"
              BackgroundImage="background.jpg">
     
     <Grid>
@@ -13,30 +12,46 @@
         <Grid Padding="20" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Image Source="logo_sample.png" Aspect="AspectFit" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <xfx:XfxCardView CornerRadius="20" Padding="10" Grid.Row="1" Opacity="0.7" BackgroundColor="White">
+            <Frame CornerRadius="20" Padding="10" Grid.Row="1" Opacity="0.7" BackgroundColor="White">
                 <StackLayout>
+                    <StackLayout.Behaviors>
+                        <behaviors:ValidationGroupBehavior x:Name="form"/>
+                    </StackLayout.Behaviors>
                     <xfx:XfxEntry Placeholder="Adınız" ErrorDisplay="None" Text="{Binding UserModel.Name}"/>
                     <xfx:XfxEntry Placeholder="Soyadınız" ErrorDisplay="None" Text="{Binding UserModel.SurName}"/>
                     <xfx:XfxEntry Placeholder="Email Adresiniz" ErrorDisplay="None" Keyboard="Email" Text="{Binding UserModel.Email}">
                         <xfx:XfxEntry.Behaviors>
-                            <behaviors:EmailValidatorBehavior/>
+                            <behaviors:ValidationBehavior Group="{x:Reference form}" PropertyName="Text">
+                                <behaviors:ValidationBehavior.Validators>
+                                    <validators:RequiredValidator/>
+                                    <validators:FormatValidator Message="Hatalı Mail Formatı" Format="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"/>
+                                </behaviors:ValidationBehavior.Validators>
+                            </behaviors:ValidationBehavior>
                         </xfx:XfxEntry.Behaviors>
                     </xfx:XfxEntry>
-                    <xfx:XfxEntry Placeholder="GSM" ErrorDisplay="None" Keyboard="Email" Text="{Binding UserModel.Phone}"/>
+                    <xfx:XfxEntry Placeholder="GSM" ErrorDisplay="None" Keyboard="Email" Text="{Binding UserModel.Phone}">
+                        <xfx:XfxEntry.Behaviors>
+                            <behaviors:ValidationBehavior Group="{x:Reference form}" PropertyName="Text">
+                                <behaviors:ValidationBehavior.Validators>
+                                    <validators:RequiredValidator/>
+                                    <validators:FormatValidator Message="Telefon no 10 karakter olmalıdır" Format="^[0-9]{10}$" />
+                                </behaviors:ValidationBehavior.Validators>
+                            </behaviors:ValidationBehavior>
+                        </xfx:XfxEntry.Behaviors>
+                    </xfx:XfxEntry>
                     <xfx:XfxEntry x:Name="entPassword" Placeholder="Şifre" IsPassword="True" ErrorDisplay="None" Text="{Binding UserModel.Password}"/>
-                    <xfx:XfxEntry Placeholder="Şifre Tekrar" IsPassword="True" ErrorDisplay="Underline">
+                    <xfx:XfxEntry Placeholder="Şifre Tekrar" IsPassword="True" ErrorDisplay="None">
                         <xfx:XfxEntry.Behaviors>
                             <behaviors:CompareValidationBehavior BindingContext="{x:Reference entPassword}" Text="{Binding Text}" />
                         </xfx:XfxEntry.Behaviors>
                     </xfx:XfxEntry>
-
-                    <Button Text="Kayıt Ol" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding UserRegisterCommand}"/>
+                    <Button Text="Kayıt Ol" TextColor="White" BackgroundColor="#00001a" CornerRadius="10" Command="{Binding UserRegisterCommand}" IsEnabled="{Binding Source={x:Reference form}, Path=IsValid}"/>
                     <Button Text="GERİ" TextColor="Black" Opacity="0.7" BackgroundColor="White" HorizontalOptions="Center" CornerRadius="20" Command="{Binding OnBackActionCommand}"/>
                 </StackLayout>
-            </xfx:XfxCardView>
+            </Frame>
         </Grid>
 
         <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
