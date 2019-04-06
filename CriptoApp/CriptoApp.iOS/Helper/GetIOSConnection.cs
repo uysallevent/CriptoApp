@@ -1,9 +1,7 @@
 ﻿using CriptoApp.Helper;
-using CriptoApp.iOS.Helper;
-using SQLite.Net;
-using SQLite.Net.Platform.XamarinIOS;
+using SQLite;
 
-[assembly:Xamarin.Forms.Dependency(typeof(CriptoApp.iOS.Helper.GetIOSConnection))]
+[assembly: Xamarin.Forms.Dependency(typeof(CriptoApp.iOS.Helper.GetIOSConnection))]
 namespace CriptoApp.iOS.Helper
 {
     public class GetIOSConnection : ISQLiteConnection
@@ -12,8 +10,7 @@ namespace CriptoApp.iOS.Helper
         {
             var documentPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             var path = System.IO.Path.Combine(documentPath,App.DbName);
-            var platform =new SQLitePlatformIOS();
-            var connection = new SQLiteConnection(platform,path);
+            var connection = new SQLiteConnection(path);
             return connection;
         }
     }

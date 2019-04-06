@@ -15,6 +15,7 @@ namespace CriptoApp.Views
             InitializeComponent();
             //dgCripto = new Xamarin.Forms.DataGrid.DataGrid();
             BindingContext = viewModel = new CriptoListViewModel(this.Navigation);
+            var a = viewModel.SortList;
         }
 
         protected override void OnAppearing()

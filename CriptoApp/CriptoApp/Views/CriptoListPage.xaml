@@ -6,15 +6,16 @@
              xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
              xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
              x:Class="CriptoApp.Views.CriptoListPage"
+             x:Name="CriptoListPa"
              BackgroundImage="background.jpg"
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Name="MenuItem1" Order="Primary" Icon="icon_filter.png" Text="Filtre" Priority="0" />
-        <ToolbarItem Name="MenuItem2" Order="Primary" Icon="icon_sort.png" Text="Sırala" Priority="1" />
+        <ToolbarItem Name="MenuItem2" Order="Primary" Icon="icon_sort.png" Text="Sırala" Priority="1" Command="{Binding SortingVisibilityCommand}" />
         <ToolbarItem Name="MenuItem2" Order="Primary" Icon="icon_user.png" Text="Para Birimi" Priority="2" Command="{Binding GotoUserPageCommand}" />
     </ContentPage.ToolbarItems>
-    <Grid>  
+    <Grid>
         <Grid>
             <dg:DataGrid x:Name="dgCripto" 
                          ItemsSource="{Binding ListCriptoMoney}"  
@@ -75,6 +76,32 @@
                     </ResourceDictionary>
                 </dg:DataGrid.Resources>
             </dg:DataGrid>
+        </Grid>
+        <Grid BackgroundColor="Black" Opacity="0.91" IsVisible="{Binding SortingVisibility,Mode=OneWay}">
+            <Frame Margin="80,200,80,200" Padding="5" BackgroundColor="White" >
+                <StackLayout>
+                    <ListView ItemsSource="{Binding SortList}" BackgroundColor="White" SeparatorVisibility="Default" SeparatorColor="Orange" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement" HasUnevenRows="True"
+                              SelectedItem="{Binding selectedSortingMode}">
+                        <ListView.Header>
+                            <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="Black">
+                                <Label Text="Sıralama" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="White" FontSize="17" />
+                            </StackLayout>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Margin="0,5,0,5">
+                                        <Image Source="icon_sort_black.png" HeightRequest="22" WidthRequest="22"/>
+                                        <Label Text="{Binding .}" TextColor="Black" HorizontalTextAlignment="Center" FontSize="15"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Text="İPTAL" TextColor="White" BackgroundColor="Black" CornerRadius="10" HeightRequest="30" />
+                </StackLayout>
+                
+            </Frame>
         </Grid>
         <Grid BackgroundColor="Black" Opacity="0.7" IsVisible="{Binding IsBusy,Mode=OneWay}">
             <Grid.RowDefinitions>

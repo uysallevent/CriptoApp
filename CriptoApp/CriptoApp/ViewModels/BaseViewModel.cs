@@ -16,8 +16,6 @@ namespace CriptoApp.ViewModels
         public IDataStore<CriptoCurrencyModel> LoginServiceDataStore => DependencyService.Get<IDataStore<CriptoCurrencyModel>>() ?? new CriptoServiceDataStore();
         public IDataStore<UserPortfoyModel> PortfoyServiceDataStore => DependencyService.Get<IDataStore<UserPortfoyModel>>() ?? new PortfoyServiceDataStore();
 
-
-
         bool isBusy = false;
         public bool IsBusy
         {

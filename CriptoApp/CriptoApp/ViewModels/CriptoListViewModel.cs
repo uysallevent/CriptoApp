@@ -17,7 +17,9 @@ namespace CriptoApp.ViewModels
     public class CriptoListViewModel : BaseViewModel
     {
         public SignalRClient client;
-        IList<CurrencyServiceModel> model = new ObservableCollection<CurrencyServiceModel>();
+
+        private ObservableCollection<string> _SortList;
+        public ObservableCollection<string> SortList { get { return _SortList; } set { _SortList = value; OnPropertyChanged("SortList"); } }
         public ObservableCollection<CurrencyServiceModel> ListCriptoMoney { get; set; }
         private CurrencyModel _currencyModel;
         public CurrencyModel currencyModel
@@ -32,6 +34,10 @@ namespace CriptoApp.ViewModels
                 }
             }
         }
+
+        public bool _SortingVisibility = false;
+        public bool SortingVisibility { get { return _SortingVisibility; } set { _SortingVisibility = value; OnPropertyChanged("SortingVisibility"); } }
+
         CurrencyServiceModel _selectedModel;
         public CurrencyServiceModel selectedModel
         {
@@ -52,17 +58,32 @@ namespace CriptoApp.ViewModels
                 }
             }
         }
+
+        private string _selectedSortingMode;
+
+        public string selectedSortingMode {
+            get { return _selectedSortingMode; }
+            set { _selectedSortingMode = value; OnPropertyChanged("selectedSortingMode"); _selectedSortingMode = null;   } }
         public INavigation Navigation { get; set; }
         public ICommand GotoUserPageCommand { get; set; }
-
-
+        public ICommand SortingVisibilityCommand { get; set; }
         public CriptoListViewModel(INavigation navigation)
         {
             Title = "Kripto Paralar";
             Navigation = navigation;
             currencyModel = new CurrencyModel();
-            GotoUserPageCommand = new Command(async()=>await GotoUserPage());
+            GotoUserPageCommand = new Command(async () => await GotoUserPage());
             ListCriptoMoney = new ObservableCollection<CurrencyServiceModel>();
+            SortList = new ObservableCollection<string>();
+            SortList.Add("İSİM");
+            SortList.Add("FİYAT");
+            SortList.Add("DEĞİŞİM 24 SA.");
+            SortingVisibilityCommand = new Command(() =>
+            {
+                if (SortingVisibility) SortingVisibility = false;
+                else
+                    SortingVisibility = true;
+            });
             if (ListCriptoMoney == null || ListCriptoMoney.Count == 0)
                 IsBusy = true;
             if (client == null)
@@ -71,8 +92,7 @@ namespace CriptoApp.ViewModels
             client.ConnectionError += Client_ConnectionError;
             client.OnMessageReceived += Client_OnMessageReceived;
         }
-
-        private async Task  GotoUserPage()
+        private async Task GotoUserPage()
         {
             try
             {
@@ -89,7 +109,6 @@ namespace CriptoApp.ViewModels
             }
 
         }
-
         private async void OnItemSelected(CurrencyServiceModel Selected)
         {
             if (Selected == null)
@@ -115,7 +134,6 @@ namespace CriptoApp.ViewModels
             //else
             //    Settings.PortfoyList = Settings.PortfoyList + "-" + Selected.FullName;
         }
-
         private void Client_OnMessageReceived(string ListCripto)
         {
             Device.BeginInvokeOnMainThread(() =>
@@ -165,7 +183,6 @@ namespace CriptoApp.ViewModels
                 }
             });
         }
-
         private void Client_ConnectionError()
         {
             try
@@ -180,7 +197,6 @@ namespace CriptoApp.ViewModels
             }
 
         }
-
         async Task GetCriptoMoneyList()
         {
             if (IsBusy)
@@ -190,7 +206,6 @@ namespace CriptoApp.ViewModels
             {
                 ListCriptoMoney.Clear();
                 var items = await CriptoServiceDataStore.GetItemsAsync(false);
-
             }
             catch (Exception ex)
             {
@@ -202,7 +217,5 @@ namespace CriptoApp.ViewModels
             }
 
         }
-
-        static List<CurrencyServiceModel> StatikListe = new List<CurrencyServiceModel>();
     }
 }
